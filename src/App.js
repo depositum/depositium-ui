@@ -5,6 +5,8 @@ import { Box } from '@mui/material';
 import Header from './header/Header';
 import Balance from './balance/Balance';
 import Strategies from './features/strategies/Strategies';
+import walletAPI from "./api/WalletAPI";
+import ConnectItem from "./login/ConnectItem";
 const theme = createTheme({
   palette: {
     primary: {
@@ -52,7 +54,7 @@ function App() {
               <Header />
             </Box>
             <Box sx={{ gridArea: 'balance', height: '100vh', gridAutoFlow: 'row', bgcolor: 'secondary.light' }}>
-              <Balance />
+                {walletAPI.isSignedIn() ? <Balance /> : <Box>Need to login</Box>}
             </Box>
             <Box sx={{ gridArea: 'strategies', height: '100vh', bgcolor: 'info.light' }}>
               <Strategies />
