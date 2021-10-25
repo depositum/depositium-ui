@@ -1,26 +1,13 @@
-import { keyStores, Near } from 'near-api-js';
 import Decimal from 'decimal.js';
+import nearAPI from "../../api/NearAPI";
 
 const NEAR_NOMINATION_EXP = 24; // todo get from lib
-
-const config = {
-    networkId: 'mainnet',
-    nodeUrl: 'https://rpc.mainnet.near.org',
-    walletUrl: 'https://wallet.near.org',
-    helperUrl: 'https://helper.mainnet.near.org',
-    explorerUrl: 'https://explorer.mainnet.near.org',
-    indexerUrl: 'https://mainnet-indexer.ref-finance.com',
-};
-const near = new Near({
-    keyStore: new keyStores.InMemoryKeyStore(),
-    ...config,
-});
 
 const view = ({
     methodName,
     args = {},
 }) => {
-    return near.connection.provider
+    return nearAPI.connection.provider
         .query({
             request_type: 'call_function',
             finality: 'final',
