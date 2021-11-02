@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchPricesFromREF } from './priceAPI';
+import { fetchPricesFromREF } from './contractAPI';
 import Decimal from 'decimal.js';
 
 const initialState = {

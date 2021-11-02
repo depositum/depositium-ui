@@ -1,6 +1,6 @@
-import nearAPI from "./NearAPI";
+import { nearAPITestnet } from "./NearAPI";
 import {WalletConnection} from "near-api-js";
-
-const walletAPI = new WalletConnection(nearAPI, 'depositium');
+import config from '../config';
+const walletAPI = new WalletConnection(nearAPITestnet, config.depositiumContractId);
 
 export default walletAPI

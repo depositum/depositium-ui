@@ -6,8 +6,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { fetchPricesAsync } from './features/providers/priceSlice';
+import { fetchAccountBalanceAsync } from './features/providers/balanceSlice';
 
 store.dispatch(fetchPricesAsync());
+store.dispatch(fetchAccountBalanceAsync());
 
 ReactDOM.render(
   <React.StrictMode>
