@@ -2,9 +2,10 @@ import React from 'react';
 import { Box, Button, TextField, Slider, Typography, InputAdornment } from '@mui/material';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import { useSelector, useDispatch } from 'react-redux';
-import { 
-    changeDepositAmount, 
+import {
+    changeDepositAmount,
     changeDays,
+    startStrategy,
     selectStrategyItem,
 } from './strategyItemSlice';
 import {
@@ -114,8 +115,12 @@ export default function StrategyItem(props) {
                 {/* <div>days</div> */}
             </Item>
             <Item sx={{ gridArea: 'start', display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
-                <Button variant="contained" color="primary" size="small" endIcon={<PlayCircleOutlineIcon />}>
-                    START
+                <Button variant="contained"
+                    color="primary"
+                    size="small"
+                    onClick={(e) => dispatch(startStrategy({ strategyId, value: e.target.value }))}
+                    endIcon={<PlayCircleOutlineIcon />}>
+                    FARM
                 </Button>
             </Item>
         </Box>

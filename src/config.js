@@ -9,4 +9,5 @@ export default {
     wrapNearContractId: process.env.REACT_APP_WRAP_NEAR_CONTRACT_ID,
     depositiumContractId: process.env.REACT_APP_DEPOSITIUM_CONTRACT_ID,
     refFinanceContractId: process.env.REACT_APP_REF_FINANCE_CONTRACT_ID,
+    refNearStrategyContractId: process.env.REACT_APP_REF_NEAR_STRATEGY_CONTRACT_ID,
 };

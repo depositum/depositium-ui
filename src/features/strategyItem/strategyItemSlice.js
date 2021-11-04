@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Decimal from 'decimal.js';
+import { startStrategy as startStrategyApiCall } from '../../api/NearAPI';
 
 const initialState = {
     'f_ref_near': {
@@ -52,10 +53,17 @@ export const strategyItemSlice = createSlice({
             strategy.days = value;
             strategy.profit = calculateProfit(strategy.apr, strategy.days, strategy.depositAmount);
         },
+        startStrategy: (state, action) => {
+            const { strategyId } = action.payload;
+            console.log('start strategy', strategyId);
+            startStrategyApiCall('10').then((res) => {
+                console.log('start strategy res:', res);
+            }).catch(err => console.log('startStrategy err', err))
+        },
     },
 });
 
-export const { changeDepositAmount, changeDays } = strategyItemSlice.actions;
+export const { changeDepositAmount, changeDays, startStrategy } = strategyItemSlice.actions;
 
 export const selectStrategyItem = (state, strategyId) => state.strategyItem[strategyId];
 

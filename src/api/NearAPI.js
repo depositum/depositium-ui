@@ -1,7 +1,7 @@
 import { keyStores, Near, utils } from "near-api-js";
 import { ftGetStorageBalance, executeMultipleTransactions } from './token';
 import config from '../config';
-
+import { wallet } from './token';
 export const ONE_YOCTO_NEAR = '0.000000000000000000000001';
 export const NEW_ACCOUNT_STORAGE_COST = '0.00125';
 
@@ -67,6 +67,65 @@ export const wrapNear = async (amount) => {
 
     transactions.push({
         receiverId: config.wrapNearContractId,
+        functionCalls: actions,
+    });
+
+    return executeMultipleTransactions(transactions);
+};
+
+export const createSubAccount = async (amount) => {
+    const transactions = [];
+
+    const actions = [];
+
+    const accoundId = wallet.getAccountId();
+    const accoundPrefix = accoundId.split('.')[0];
+    actions.push({
+        methodName: 'create',
+        args: {
+            amount: utils.format.parseNearAmount(amount),
+            accound_sub_id: accoundPrefix
+        },
+        amount: '3',
+        gas: '300000000000000',
+    });
+
+    const initTx = {
+        receiverId: `${accoundPrefix}.${config.depositiumContractId}`,
+        functionCalls: [{
+            methodName: 'init',
+            args: {},
+            gas: '300000000000000',
+        }],
+    };
+
+    transactions.push({
+        receiverId: config.depositiumContractId,
+        functionCalls: actions,
+    });
+    transactions.push(initTx);
+
+    return executeMultipleTransactions(transactions);
+};
+
+export const startStrategy = async (amount) => {
+    const transactions = [];
+
+    const actions = [];
+
+    const accoundId = wallet.getAccountId();
+    const accoundPrefix = accoundId.split('.')[0];
+    actions.push({
+        methodName: 'supply',
+        args: {
+            amount: utils.format.parseNearAmount(amount),
+            token: 'wrap_near-aromankov.testnet'
+        },
+        gas: '300000000000000',
+    });
+
+    transactions.push({
+        receiverId: `${accoundPrefix}.${config.depositiumContractId}`,
         functionCalls: actions,
     });
 
