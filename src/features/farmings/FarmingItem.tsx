@@ -1,7 +1,8 @@
-import React, { CSSProperties, useCallback, useMemo } from "react";
-import { Box, Button, Card, styled } from "@mui/material";
+import React, { CSSProperties, useCallback, useMemo, useState } from "react";
+import { Box, Button, Card, Modal, styled } from "@mui/material";
 import CalculatorIcon from "../../icons/CalculatorIcon";
 import { FarmStatus, TokenName } from "../../hooks/useFarmsList";
+import Calculator from "../../components/Calculator/Calculator";
 
 interface Props {
   pair: {
@@ -13,10 +14,6 @@ interface Props {
 }
 
 const FarmingItem: React.FunctionComponent<Props> = ({ pair, status, apr }) => {
-  const onCalculate = useCallback(() => {
-    console.log("click");
-  }, []);
-
   const statusColor = useMemo(() => {
     switch (status) {
       case "in-progress":
@@ -27,6 +24,17 @@ const FarmingItem: React.FunctionComponent<Props> = ({ pair, status, apr }) => {
         return "#F0B622";
     }
   }, [status]);
+
+  // Calculator control
+  const [calculatorVisible, setCalculatorVisible] = useState(false);
+
+  const onOpenCalculator = useCallback(() => {
+    setCalculatorVisible(true);
+  }, []);
+
+  const onCloseCalculator = useCallback(() => {
+    setCalculatorVisible(false);
+  }, []);
 
   return (
     <Card
@@ -73,7 +81,7 @@ const FarmingItem: React.FunctionComponent<Props> = ({ pair, status, apr }) => {
             Farming
           </div>
           <CalculateButton
-            onClick={onCalculate}
+            onClick={onOpenCalculator}
             variant="text"
             startIcon={<CalculatorIcon />}
           >
@@ -140,6 +148,14 @@ const FarmingItem: React.FunctionComponent<Props> = ({ pair, status, apr }) => {
           </div>
         </div>
       </Box>
+      <Modal
+        open={calculatorVisible}
+        onClose={onCloseCalculator}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <Calculator pair={pair} apr={apr} onClose={onCloseCalculator} />
+      </Modal>
     </Card>
   );
 };
@@ -149,7 +165,7 @@ interface TokenIconProps {
   style?: CSSProperties;
 }
 
-const TokenIcon: React.FunctionComponent<TokenIconProps> = ({
+export const TokenIcon: React.FunctionComponent<TokenIconProps> = ({
   token,
   style,
 }) => {

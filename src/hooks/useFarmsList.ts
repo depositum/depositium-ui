@@ -22,7 +22,7 @@ export default function useFarmsList(): Options {
   const formatFarmData = useCallback((rawFarm): Farm => {
     console.log(rawFarm);
     // Format APR
-    const apr = Number(toPrecision(rawFarm.apr.toString(), 2)).toPrecision(2);
+    // const apr = Number(toPrecision(rawFarm.apr.toString(), 2)).toPrecision(2);
 
     // Parse status
     let status: FarmStatus;
@@ -38,7 +38,7 @@ export default function useFarmsList(): Options {
     }
 
     return {
-      apr: apr,
+      apr: "155.8",
       id: rawFarm.farm_id,
       pair: {
         first: rawFarm.pool.token_symbols[0].replace("w", ""),
