@@ -1,14 +1,14 @@
 import React, { CSSProperties, useCallback, useMemo } from "react";
 import { Box, Button, Card, styled } from "@mui/material";
 import CalculatorIcon from "../../icons/CalculatorIcon";
-import { TokenName } from "../../hooks/useFarmsList";
+import { FarmStatus, TokenName } from "../../hooks/useFarmsList";
 
 interface Props {
   pair: {
     first: TokenName;
     second: TokenName;
   };
-  status: "in-progress" | "active" | "soon";
+  status: FarmStatus;
   apr: string;
 }
 

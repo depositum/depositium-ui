@@ -24,7 +24,11 @@ const FarmsList: React.FunctionComponent = () => {
         >
           {farms.map(farm => (
             <Box key={farm.id} sx={{ m: 1, p: 1 }}>
-              <FarmingItem status="soon" pair={farm.pair} apr={farm.apr} />
+              <FarmingItem
+                status={farm.status}
+                pair={farm.pair}
+                apr={farm.apr}
+              />
             </Box>
           ))}
         </Box>
