@@ -1,11 +1,10 @@
 import React, { CSSProperties, useEffect, useMemo, useState } from "react";
 import { TokenName } from "../../hooks/useFarmsList";
-import walletAPI from "../../api/WalletAPI";
-import { utils } from "near-api-js";
 import { fetchPricesFromREF } from "../../features/providers/priceAPI";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import Decimal from "decimal.js";
+import { fetchAccountBalance } from "../../features/providers/contractAPI";
 
 const Balance: React.FunctionComponent = () => (
   <div>
@@ -18,9 +17,10 @@ const NearBalance: React.FunctionComponent = () => {
   const [balance, setBalance] = useState<string | undefined>(undefined);
   useEffect(() => {
     async function fetchBalance() {
-      const balance = await walletAPI.account().getAccountBalance();
-      const amountInYocto = utils.format.formatNearAmount(balance.total, 5);
-      setBalance(amountInYocto);
+      // const balance = await walletAPI.account().getAccountBalance();
+      const balance = await fetchAccountBalance();
+      // const amountInYocto = utils.format.formatNearAmount(balance.total, 5);
+      setBalance(balance);
     }
     fetchBalance();
   }, []);

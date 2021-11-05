@@ -11,6 +11,8 @@ import { useCallback } from "react";
 import walletAPI from "../api/WalletAPI";
 import BottomArrowIcon from "../icons/BottomArrowIcon";
 import NotificationIcon from "../icons/NotificationIcon";
+import { ArrowCircleDown } from "@mui/icons-material";
+import { wrapNear } from "../api/NearAPI";
 
 const ProfileItem: React.FunctionComponent = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -22,6 +24,10 @@ const ProfileItem: React.FunctionComponent = () => {
 
   const onCloseProfile = useCallback(() => {
     setAnchorEl(null);
+  }, []);
+
+  const onDeposit = useCallback(async () => {
+    await wrapNear("1.1");
   }, []);
 
   const onSignOut = useCallback(() => {
@@ -97,6 +103,12 @@ const ProfileItem: React.FunctionComponent = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
+        <MenuItem onClick={onDeposit}>
+          <ListItemIcon>
+            <ArrowCircleDown fontSize="small" />
+          </ListItemIcon>
+          Deposit
+        </MenuItem>
         <MenuItem onClick={onSignOut}>
           <ListItemIcon>
             <Logout fontSize="small" />
