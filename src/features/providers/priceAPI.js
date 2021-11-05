@@ -1,12 +1,13 @@
 import Decimal from "decimal.js";
-import nearAPI from "../../api/NearAPI";
+import { nearAPITestnet } from "../../api/NearAPI";
+import config from "../../config";
 
 const NEAR_NOMINATION_EXP = 24; // todo get from lib
 
 const view = ({ methodName, args = {} }) =>
-  nearAPI.connection.provider
+  nearAPITestnet.connection.provider
     .query({
-      account_id: "v2.ref-finance.near",
+      account_id: config.refFinanceContractId,
       args_base64: Buffer.from(JSON.stringify(args)).toString("base64"),
       finality: "final",
       method_name: methodName,
@@ -14,7 +15,8 @@ const view = ({ methodName, args = {} }) =>
     })
     .then(({ result }) => JSON.parse(Buffer.from(result).toString()));
 
-const NEAR_USDT_POOL_ID = 4;
+// const NEAR_USDT_POOL_ID = 4;
+const NEAR_USDT_POOL_ID = 7;
 export async function fetchPricesFromREF() {
   const res = await view({
     args: { pool_id: NEAR_USDT_POOL_ID },

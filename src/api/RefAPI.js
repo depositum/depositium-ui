@@ -7,7 +7,11 @@ import {
 } from "../contract/RefContractView";
 import walletAPI from "./WalletAPI";
 
-const allowedFarms = ["v2.ref-finance.near@79#0"];
+// const allowedFarms = ["v2.ref-finance.near@79#0"];
+const allowedFarms = [
+  "ref-finance-101.testnet@0#0",
+  "ref-finance-101.testnet@14#0",
+];
 
 export const fetchPoolsByFarmIs = async poolIds => {
   const ids = poolIds.join("|");
