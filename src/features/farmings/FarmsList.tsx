@@ -8,7 +8,13 @@ const FarmsList: React.FunctionComponent = () => {
 
   return (
     <div style={{ height: "100%", padding: "0px 40px 40px 40px" }}>
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          marginBottom: 23,
+        }}
+      >
         <StatusInfo color="#00D254" label="In progress" />
         <StatusInfo color="#00ADD2" label="Active" />
         <StatusInfo color="#F0B622" label="Coming soon" />
@@ -23,7 +29,7 @@ const FarmsList: React.FunctionComponent = () => {
           }}
         >
           {farms.map(farm => (
-            <Box key={farm.id} sx={{ m: 1, p: 1 }}>
+            <Box key={farm.id}>
               <FarmingItem
                 status={farm.status}
                 pair={farm.pair}
