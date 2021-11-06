@@ -18,13 +18,15 @@
     "bn.js": "^5.2.0",
     "borsh": "^0.6.0",
     "decimal.js": "^3.0.0",
+    "formik": "^2.2.9",
     "mathjs": "^9.5.1",
     "near-api-js": "^0.43.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.5",
     "react-scripts": "4.0.3",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",
