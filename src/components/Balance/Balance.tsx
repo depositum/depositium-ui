@@ -81,7 +81,7 @@ const NearBalance: React.FunctionComponent = () => {
               opacity: 0.5,
             }}
           >
-            {`$ ${fiatAmount} USD`}
+            {`$${fiatAmount} USD`}
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Box, Button, Card, Modal, styled } from "@mui/material";
 import CalculatorIcon from "../../icons/CalculatorIcon";
 import { FarmStatus, TokenName } from "../../hooks/useFarmsList";
-import Calculator from "../../components/Calculator/Calculator";
+import CalculatorModal from "../../modals/CalculatorModal/CalculatorModal";
 import { startStrategy } from "../strategyItem/strategyItemSlice";
 
 interface Props {
@@ -31,7 +31,7 @@ const FarmingItem: React.FunctionComponent<Props> = ({ pair, status, apr }) => {
   const [calculatorVisible, setCalculatorVisible] = useState(false);
 
   const dispatch = useDispatch();
-  
+
   const onOpenCalculator = useCallback(() => {
     setCalculatorVisible(true);
   }, []);
@@ -40,7 +40,12 @@ const FarmingItem: React.FunctionComponent<Props> = ({ pair, status, apr }) => {
     setCalculatorVisible(false);
   }, []);
 
-  const onStartStrategy = (e: any) => dispatch(startStrategy({ strategyId: 'any', value: e.target.value }));
+  const onStartStrategy = useCallback(
+    (e: any) => {
+      dispatch(startStrategy({ strategyId: "any", value: e.target.value }));
+    },
+    [dispatch],
+  );
 
   return (
     <Card
@@ -50,6 +55,7 @@ const FarmingItem: React.FunctionComponent<Props> = ({ pair, status, apr }) => {
         borderRadius: "10px",
         borderWidth: "1px",
         boxShadow: "0px 4px 20px rgba(103, 103, 103, 0.25)",
+        mb: "25px",
         overflow: "hidden",
         width: "100%",
       }}
@@ -160,7 +166,12 @@ const FarmingItem: React.FunctionComponent<Props> = ({ pair, status, apr }) => {
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Calculator pair={pair} apr={apr} onClose={onCloseCalculator} onStartStrategy={onStartStrategy} />
+        <CalculatorModal
+          pair={pair}
+          apr={apr}
+          onClose={onCloseCalculator}
+          onStartStrategy={onStartStrategy}
+        />
       </Modal>
     </Card>
   );
