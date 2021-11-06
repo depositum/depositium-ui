@@ -132,3 +132,18 @@ export const startStrategy = async amount => {
 
   return executeMultipleTransactions(transactions);
 };
+
+export const fetchFiatRate = async () =>
+  fetch(process.env.REACT_APP_ACCOUNT_HELPER_URL + "/fiat", {
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+    method: "GET",
+  })
+    .then(res => res.json())
+    .catch(() => ({
+      near: {
+        cny: 66.36,
+        eur: 8.98,
+        last_updated_at: 1636159198,
+        usd: 10.37,
+      },
+    }));

@@ -1,10 +1,8 @@
-import React, { CSSProperties, useEffect, useMemo, useState } from "react";
+import React, { CSSProperties, useMemo } from "react";
 import { TokenName } from "../../hooks/useFarmsList";
-import { fetchPricesFromREF } from "../../features/providers/priceAPI";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import Decimal from "decimal.js";
-import { fetchAccountBalance } from "../../features/providers/contractAPI";
+import useNearBalance from "../../hooks/useNearBalance";
 
 const Balance: React.FunctionComponent = () => (
   <div>
@@ -13,27 +11,7 @@ const Balance: React.FunctionComponent = () => (
 );
 
 const NearBalance: React.FunctionComponent = () => {
-  // Preloading and set balance
-  const [balance, setBalance] = useState<string | undefined>(undefined);
-  useEffect(() => {
-    async function fetchBalance() {
-      // const balance = await walletAPI.account().getAccountBalance();
-      const balance = await fetchAccountBalance();
-      // const amountInYocto = utils.format.formatNearAmount(balance.total, 5);
-      setBalance(balance);
-    }
-    fetchBalance();
-  }, []);
-
-  // Preloading and set price
-  const [price, setPrice] = useState<Decimal | undefined>(undefined);
-  useEffect(() => {
-    async function fetchNearPrice() {
-      const nearPrice = await fetchPricesFromREF();
-      setPrice(nearPrice);
-    }
-    fetchNearPrice();
-  }, []);
+  const { balance, rate, fiatAmount } = useNearBalance();
 
   return (
     <div
@@ -79,7 +57,7 @@ const NearBalance: React.FunctionComponent = () => {
               textTransform: "uppercase",
             }}
           >
-            {`${balance ?? "~"} NEAR`}
+            {`${balance} NEAR`}
           </div>
         </div>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -92,7 +70,7 @@ const NearBalance: React.FunctionComponent = () => {
               opacity: 0.5,
             }}
           >
-            {`$ ${price ? price.toFixed(2) : "~"}`}
+            {`$ ${rate}`}
           </div>
           <div
             style={{
@@ -103,9 +81,7 @@ const NearBalance: React.FunctionComponent = () => {
               opacity: 0.5,
             }}
           >
-            {`$ ${
-              price && balance ? price.times(balance).toFixed(2) : "~"
-            } USD`}
+            {`$ ${fiatAmount} USD`}
           </div>
         </div>
       </div>
