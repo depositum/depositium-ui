@@ -20,23 +20,32 @@ const near = new Near({
 export default class SpecialWallet extends WalletConnection {
   _connectedAccount;
 
-  account() {
+  _checkConnectedAccount() {
     if (!this._connectedAccount) {
       this._connectedAccount = new SpecialWalletAccount(
         this,
         this._near.connection,
-        this._authData.accountId,
+        this._authData.accountId
       );
     }
 
+  }
+
+  account() {
+    this._checkConnectedAccount();
     return this._connectedAccount;
   }
 
-  createTransaction({ receiverId, actions, nonceOffset = 1 }) {
+  createTransaction({
+    receiverId,
+    actions,
+    nonceOffset = 1,
+  }) {
+    this._checkConnectedAccount();
     return this._connectedAccount.createTransaction({
+      receiverId,
       actions,
       nonceOffset,
-      receiverId,
     });
   }
 }

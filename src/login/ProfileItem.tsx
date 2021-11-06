@@ -27,7 +27,7 @@ const ProfileItem: React.FunctionComponent = () => {
   }, []);
 
   const onDeposit = useCallback(async () => {
-    await wrapNear("1.1");
+    await wrapNear("10.1");
   }, []);
 
   const onSignOut = useCallback(() => {

@@ -1,8 +1,10 @@
 import React, { CSSProperties, useCallback, useMemo, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Box, Button, Card, Modal, styled } from "@mui/material";
 import CalculatorIcon from "../../icons/CalculatorIcon";
 import { FarmStatus, TokenName } from "../../hooks/useFarmsList";
 import Calculator from "../../components/Calculator/Calculator";
+import { startStrategy } from "../strategyItem/strategyItemSlice";
 
 interface Props {
   pair: {
@@ -28,6 +30,8 @@ const FarmingItem: React.FunctionComponent<Props> = ({ pair, status, apr }) => {
   // Calculator control
   const [calculatorVisible, setCalculatorVisible] = useState(false);
 
+  const dispatch = useDispatch();
+  
   const onOpenCalculator = useCallback(() => {
     setCalculatorVisible(true);
   }, []);
@@ -35,6 +39,8 @@ const FarmingItem: React.FunctionComponent<Props> = ({ pair, status, apr }) => {
   const onCloseCalculator = useCallback(() => {
     setCalculatorVisible(false);
   }, []);
+
+  const onStartStrategy = (e: any) => dispatch(startStrategy({ strategyId: 'any', value: e.target.value }));
 
   return (
     <Card
@@ -154,7 +160,7 @@ const FarmingItem: React.FunctionComponent<Props> = ({ pair, status, apr }) => {
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Calculator pair={pair} apr={apr} onClose={onCloseCalculator} />
+        <Calculator pair={pair} apr={apr} onClose={onCloseCalculator} onStartStrategy={onStartStrategy} />
       </Modal>
     </Card>
   );

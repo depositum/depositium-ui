@@ -25,9 +25,10 @@ interface Props {
   };
   apr: string;
   onClose: () => void;
+  onStartStrategy: (e: any) => void;
 }
 
-const Calculator: React.FunctionComponent<Props> = ({ pair, apr, onClose }) => (
+const Calculator: React.FunctionComponent<Props> = ({ pair, apr, onClose, onStartStrategy }) => (
   <React.Fragment>
     <div
       style={{
@@ -96,7 +97,7 @@ const Calculator: React.FunctionComponent<Props> = ({ pair, apr, onClose }) => (
         <ProfitBlock />
       </div>
       <div style={{ display: "flex", justifyContent: "center", marginTop: 26 }}>
-        <StartButton>Start</StartButton>
+        <StartButton onClick={onStartStrategy}>Start</StartButton>
       </div>
     </div>
   </React.Fragment>
