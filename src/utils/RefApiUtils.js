@@ -73,7 +73,7 @@ export const getFarmInfo = (
   const poolTvl = tvl;
   const poolSts = Number(toReadableNumber(24, shares_total_supply));
   const userStaked = toReadableNumber(LP_TOKEN_DECIMALS, staked ?? "0");
-  const rewardToken = tokenPriceList[farm.reward_token] || {price: 1};
+  const rewardToken = tokenPriceList[farm.reward_token] || { price: 6.35 };
   const rewardTokenPrice = rewardToken ? rewardToken.price || 0 : 0;
   const rewardNumber = toReadableNumber(rewardToken.decimals, reward) ?? "0";
   const seedAmount = seed ?? "0";
@@ -96,10 +96,10 @@ export const getFarmInfo = (
   const userRewardNumberPerWeek =
     seedAmount !== "0"
       ? math.round(
-          math.evaluate(
-            `${rewardNumberPerWeek} * (${staked ?? 0} / ${seedAmount})`,
-          ),
-        )
+        math.evaluate(
+          `${rewardNumberPerWeek} * (${staked ?? 0} / ${seedAmount})`,
+        ),
+      )
       : 0;
 
   const userRewardsPerWeek = toReadableNumber(
@@ -111,21 +111,21 @@ export const getFarmInfo = (
     poolSts === 0
       ? 0
       : Number(
-          toPrecision(((Number(totalSeed) * poolTvl) / poolSts).toString(), 1),
-        );
+        toPrecision(((Number(totalSeed) * poolTvl) / poolSts).toString(), 1),
+      );
 
   const apr =
     totalStaked === 0
       ? "0"
       : toPrecision(
-          (
-            (1 / totalStaked) *
-            (Number(rewardsPerWeek) * Number(rewardTokenPrice)) *
-            52 *
-            100
-          ).toString(),
-          2,
-        );
+        (
+          (1 / totalStaked) *
+          (Number(rewardsPerWeek) * Number(rewardTokenPrice)) *
+          52 *
+          100
+        ).toString(),
+        2,
+      );
 
   if (farm.farm_status === "Created") farm.farm_status = "Pending";
 

@@ -32,7 +32,7 @@ export default function useFarmsList(): Options {
     }
 
     return {
-      apr: "155.8",
+      apr: rawFarm.apr,
       id: rawFarm.farm_id,
       pair: {
         first: rawFarm.pool.token_symbols[0].replace("w", ""),
@@ -45,7 +45,7 @@ export default function useFarmsList(): Options {
   useEffect(() => {
     async function fetchData() {
       const response = await fetchFarmList();
-      setFarms(response.map(formatFarmData));
+      setFarms(sortByStatus(response.map(formatFarmData)));
     }
     if (farms.length === 0) {
       fetchData();
@@ -53,4 +53,13 @@ export default function useFarmsList(): Options {
   }, [farms, formatFarmData]);
 
   return { farms };
+}
+
+const sortByStatus = (farms: Farm[]): Farm[] => {
+  return farms.sort((a,b) => {
+    if (a.status === "active") {
+      return -1;
+    } 
+    return 1;
+  });
 }

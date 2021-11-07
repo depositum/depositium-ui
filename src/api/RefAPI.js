@@ -9,7 +9,7 @@ import walletAPI from "./WalletAPI";
 
 // const allowedFarms = ["v2.ref-finance.near@79#0"];
 const allowedFarms = [
-  // "ref-finance-101.testnet@0#0",
+  "ref-finance-101.testnet@36#0",
   "ref-finance-101.testnet@17#5",
 ];
 
@@ -50,7 +50,7 @@ export const fetchFarmList = async () => {
     : {};
   const tokenPriceList = await fetchTokenPriceList();
 
-  const filteredFarms = farmList;
+  const filteredFarms = farmList.filter(f => allowedFarms.includes(f.farm_id));
   const poolIds = filteredFarms.map(it => getLPTokenId(it.farm_id));
 
   let poolList = {};
