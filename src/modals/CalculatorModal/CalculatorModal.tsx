@@ -21,7 +21,7 @@ const calculateSchema = Yup.object().shape({
 interface Props {
   strategy: IFarm | IStake;
   onClose: () => void;
-  onStartStrategy: (e: unknown) => void;
+  onStartStrategy: (amount: string, strategyId: string) => void;
 }
 
 const CalculatorModal: React.FunctionComponent<Props> = ({
@@ -40,6 +40,13 @@ const CalculatorModal: React.FunctionComponent<Props> = ({
     }
   }, [strategy]);
 
+  const onSubmit = useCallback(
+    ({ amount }) => {
+      onStartStrategy(amount, String(strategy.id));
+    },
+    [onStartStrategy],
+  );
+
   return (
     <React.Fragment>
       <Formik
@@ -48,7 +55,7 @@ const CalculatorModal: React.FunctionComponent<Props> = ({
           days: 1,
         }}
         validationSchema={calculateSchema}
-        onSubmit={onStartStrategy}
+        onSubmit={onSubmit}
       >
         {({ errors, touched, values, handleChange, handleSubmit }) => (
           <div
@@ -122,7 +129,7 @@ const CalculatorModal: React.FunctionComponent<Props> = ({
                   marginTop: 26,
                 }}
               >
-                <StartButton onClick={() => handleSubmit}>Start</StartButton>
+                {strategy.status == "active" && <StartButton onClick={() => handleSubmit()}>Start</StartButton>}
               </div>
             </Form>
           </div>

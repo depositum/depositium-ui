@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { Box, Button, Card, Modal, styled } from "@mui/material";
 import CalculatorIcon from "../../icons/CalculatorIcon";
@@ -11,7 +11,17 @@ interface Props {
   stake: IStake;
 }
 
-const FarmingItem: React.FunctionComponent<Props> = ({ stake }) => {
+const StakingItem: React.FunctionComponent<Props> = ({ stake }) => {
+  const statusColor = useMemo(() => {
+    switch (stake.status) {
+      case "in-progress":
+        return "#00D254";
+      case "active":
+        return "#00ADD2";
+      case "soon":
+        return "#F0B622";
+    }
+  }, [stake.status]);
   // Calculator control
   const [calculatorVisible, setCalculatorVisible] = useState(false);
 
@@ -47,7 +57,7 @@ const FarmingItem: React.FunctionComponent<Props> = ({ stake }) => {
     >
       <Box
         sx={{
-          backgroundColor: "#FFFFFF",
+          backgroundColor: statusColor,
           height: "8px",
           width: "100%",
         }}
@@ -75,7 +85,7 @@ const FarmingItem: React.FunctionComponent<Props> = ({ stake }) => {
               marginLeft: "14px",
             }}
           >
-            {`${stake.provider} Staking`}
+            {`${stake.provider}`}
           </div>
           <CalculateButton
             onClick={onOpenCalculator}
@@ -177,4 +187,4 @@ const CalculateButton = styled(Button)({
   textTransform: "none",
 });
 
-export default React.memo(FarmingItem);
+export default React.memo(StakingItem);

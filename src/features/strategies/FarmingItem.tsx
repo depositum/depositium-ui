@@ -37,8 +37,9 @@ const FarmingItem: React.FunctionComponent<Props> = ({ farm }) => {
   }, []);
 
   const onStartStrategy = useCallback(
-    (e: any) => {
-      dispatch(startStrategy({ strategyId: "any", value: e.target.value }));
+    (amount: string, strategyId: string) => {
+      console.log(`onStartStrategy ${amount} - ${strategyId}`)
+      dispatch(startStrategy({ strategyId: strategyId, amount }));
     },
     [dispatch],
   );

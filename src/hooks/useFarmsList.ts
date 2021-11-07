@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { fetchFarmList } from "../api/RefAPI";
 import config from "../config";
 
-export type TokenName = "REF" | "NEAR" | "USDT" | "stNEAR";
+export type TokenName = "REF" | "NEAR" | "USDT" | "stNEAR" | "REF-NEAR" | "Metapool stNEAR";
 export type FarmStatus = "in-progress" | "active" | "soon";
 
 export interface IFarm {
@@ -37,8 +37,8 @@ export default function useFarmsList(): Options {
       apr: rawFarm.apr,
       id: rawFarm.farm_id,
       pair: {
-        first: rawFarm.pool.token_symbols[0].split('-')[0].replace("w", "").toUpperCase(),
-        second: rawFarm.pool.token_symbols[1].split('-')[0].replace("w", "").toUpperCase(),
+        first: rawFarm.pool.token_symbols[0].split('-')[0].replace("wrap_", "").toUpperCase(),
+        second: rawFarm.pool.token_symbols[1].split('-')[0].replace("wrap_", "").toUpperCase(),
       },
       provider: "REF",
       status: status,

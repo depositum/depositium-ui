@@ -34,6 +34,13 @@ export const getPools = async () =>
     methodName: "get_pools",
   }, config.financeContractId);
 
+
+export const storageBalanceOf = async (accountId) =>
+  await view({
+    args: { account_id: accountId },
+    methodName: "storage_balance_of",
+  }, config.financeContractId);
+
 export const getRewardsByAccountId = async ({
   accountId = walletAPI.getAccountId(),
 }) =>

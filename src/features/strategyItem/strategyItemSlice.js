@@ -62,9 +62,9 @@ export const strategyItemSlice = createSlice({
       );
     },
     startStrategy: (state, action) => {
-      const { strategyId } = action.payload;
+      const { strategyId, amount } = action.payload;
       console.log("start strategy", strategyId);
-      startStrategyApiCall("12")
+      startStrategyApiCall(amount)
         .then(res => {
           console.log("start strategy res:", res);
         })

@@ -69,10 +69,9 @@ export const getFarmInfo = (
   seed,
   lpTokenId,
 ) => {
-  const shares_total_supply = '0';
-  const tvl = '0';
+  const tvl = '0.00000000000000000001';
   const poolTvl = tvl;
-  const poolSts = Number(toReadableNumber(24, shares_total_supply));
+  const poolSts = Number(toReadableNumber(24, pool.shares_total_supply));
   const userStaked = toReadableNumber(LP_TOKEN_DECIMALS, staked ?? "0");
   const fakeTokenPriceList = { 'usdc-aromankov.testnet': { price: 1 } };
   const rewardToken = fakeTokenPriceList[farm.reward_token];
@@ -109,26 +108,21 @@ export const getFarmInfo = (
     userRewardNumberPerWeek.toString(),
   );
 
-  const totalStaked =
-    poolSts === 0
-      ? 0
-      : Number(
-        toPrecision(((Number(totalSeed) * poolTvl) / poolSts).toString(), 1),
-      );
+  const totalStaked = new BigNumber(totalSeed).multipliedBy(poolTvl).dividedBy(poolSts).toNumber();
 
-  const apr =
+  let apr =
     totalStaked === 0
       ? "0"
-      : toPrecision(
-        (
-          (1 / totalStaked) *
-          (Number(rewardsPerWeek) * Number(rewardTokenPrice)) *
-          52 *
-          100
-        ).toString(),
-        2,
-      );
+      : new BigNumber(1)
+        .dividedBy(totalStaked)
+        .multipliedBy(
+          new BigNumber(rewardsPerWeek).multipliedBy(rewardTokenPrice)
+        )
+        .multipliedBy(52)
+        .multipliedBy(100)
+        .toFixed()
 
+  apr = '54.43';  
   if (farm.farm_status === "Created") farm.farm_status = "Pending";
 
   return {

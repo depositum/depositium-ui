@@ -112,6 +112,21 @@ export const startStrategy = async amount => {
     transactions.push({
         functionCalls: [
             {
+                methodName: "storage_deposit",
+                args: {
+                    account_id: subAccId,
+                },
+                amount: "0.1",
+                gas: "300000000000000",
+                methodName: "storage_deposit",
+            },
+        ],
+        receiverId: config.farmingContractId,
+    });
+
+    transactions.push({
+        functionCalls: [
+            {
                 args: {},
                 gas: "300000000000000",
                 methodName: "init",
@@ -132,21 +147,6 @@ export const startStrategy = async amount => {
             },
         ],
         receiverId: config.depositiumContractId,
-    });
-
-    transactions.push({
-        functionCalls: [
-            {
-                methodName: "storage_deposit",
-                args: {
-                    account_id: subAccId,
-                },
-                amount: "0.1",
-                gas: "300000000000000",
-                methodName: "storage_deposit",
-            },
-        ],
-        receiverId: config.farmingContractId,
     });
 
     return executeMultipleTransactions(transactions);
