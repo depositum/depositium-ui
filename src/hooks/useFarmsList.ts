@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { fetchFarmList } from "../api/RefAPI";
+import config from "../config";
 import { toPrecision } from "../utils/RefApiUtils";
 
 export type TokenName = "REF" | "NEAR" | "USDT";
@@ -21,20 +22,13 @@ export default function useFarmsList(): Options {
 
   const formatFarmData = useCallback((rawFarm): Farm => {
     console.log(rawFarm);
-    // Format APR
-    // const apr = Number(toPrecision(rawFarm.apr.toString(), 2)).toPrecision(2);
-
-    // Parse status
-    let status: FarmStatus;
-    switch (rawFarm.farm_status) {
-      case "Pending":
-        status = "soon";
-        break;
-      case "Ended":
-        status = "in-progress";
-        break;
-      default:
-        status = "active";
+    const activeFarms = config.activeFarms;
+    
+    let status: FarmStatus = "soon";
+    if (activeFarms.includes(rawFarm.farm_id)) {
+      status = "active";
+    } else {
+      status = "soon";
     }
 
     return {

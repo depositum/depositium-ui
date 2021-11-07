@@ -11,4 +11,5 @@ export default {
   walletUrl: process.env.REACT_APP_WALLET_URL,
   wrapNearContractId: process.env.REACT_APP_WRAP_NEAR_CONTRACT_ID,
   farmingContractId: process.env.REACT_APP_FARMING_CONTRACT_ID,
+  activeFarms: process.env.REACT_APP_ACTIVE_FARMS.split(','),
 };
