@@ -7,14 +7,32 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Logout from "@mui/icons-material/Logout";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import walletAPI from "../api/WalletAPI";
 import BottomArrowIcon from "../icons/BottomArrowIcon";
 import NotificationIcon from "../icons/NotificationIcon";
 import { ArrowCircleDown } from "@mui/icons-material";
 import { wrapNear } from "../api/NearAPI";
+import DepositModal from "../modals/DepositModal/DepositModal";
+import { Modal } from "@mui/material";
 
 const ProfileItem: React.FunctionComponent = () => {
+  // Deposit modal visibility and control
+  const [depositModalVisible, setDepositModalVisible] = useState(false);
+
+  const onOpenDepositModal = useCallback(() => {
+    setDepositModalVisible(true);
+  }, []);
+
+  const onCloseDepositModal = useCallback(() => {
+    setDepositModalVisible(false);
+  }, []);
+
+  const onDeposit = useCallback(async (amount: string) => {
+    await wrapNear(amount);
+  }, []);
+
+  // Profile opened control
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -26,10 +44,7 @@ const ProfileItem: React.FunctionComponent = () => {
     setAnchorEl(null);
   }, []);
 
-  const onDeposit = useCallback(async () => {
-    await wrapNear("10.1");
-  }, []);
-
+  // Sign out
   const onSignOut = useCallback(() => {
     walletAPI.signOut();
     window.location.reload();
@@ -103,7 +118,7 @@ const ProfileItem: React.FunctionComponent = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={onDeposit}>
+        <MenuItem onClick={onOpenDepositModal}>
           <ListItemIcon>
             <ArrowCircleDown fontSize="small" />
           </ListItemIcon>
@@ -116,6 +131,14 @@ const ProfileItem: React.FunctionComponent = () => {
           Logout
         </MenuItem>
       </Menu>
+      <Modal
+        open={depositModalVisible}
+        onClose={onCloseDepositModal}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <DepositModal onDeposit={onDeposit} onClose={onCloseDepositModal} />
+      </Modal>
     </React.Fragment>
   );
 };
