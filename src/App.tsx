@@ -3,10 +3,10 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Stack } from "@mui/material";
 import walletAPI from "./api/WalletAPI";
-import FarmsList from "./features/farmings/FarmsList";
 import React from "react";
 import Header from "./components/Header/Header";
 import Balance from "./components/Balance/Balance";
+import StrategiesList from "./features/strategies/StrategiesList";
 
 const theme = createTheme({
   palette: {
@@ -69,7 +69,7 @@ const App = (): JSX.Element => (
               width: walletAPI.isSignedIn() ? "70%" : "100%",
             }}
           >
-            <FarmsList />
+            <StrategiesList />
           </div>
         </Stack>
       </div>

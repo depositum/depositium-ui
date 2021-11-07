@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { fetchFarmList } from "../api/RefAPI";
 import config from "../config";
-import { toPrecision } from "../utils/RefApiUtils";
 
-export type TokenName = "REF" | "NEAR" | "USDT";
+export type TokenName = "REF" | "NEAR" | "USDT" | "stNEAR";
 export type FarmStatus = "in-progress" | "active" | "soon";
 
-interface Farm {
+export interface IFarm {
+  _type: "farm";
+  provider: string;
   id: number;
   apr: string;
   pair: { first: TokenName; second: TokenName };
@@ -14,16 +15,16 @@ interface Farm {
 }
 
 interface Options {
-  farms: Farm[];
+  farms: IFarm[];
 }
 
 export default function useFarmsList(): Options {
-  const [farms, setFarms] = useState<Farm[]>([]);
+  const [farms, setFarms] = useState<IFarm[]>([]);
 
-  const formatFarmData = useCallback((rawFarm): Farm => {
+  const formatFarmData = useCallback((rawFarm): IFarm => {
     console.log(rawFarm);
     const activeFarms = config.activeFarms;
-    
+
     let status: FarmStatus = "soon";
     if (activeFarms.includes(rawFarm.farm_id)) {
       status = "active";
@@ -32,12 +33,14 @@ export default function useFarmsList(): Options {
     }
 
     return {
+      _type: "farm",
       apr: rawFarm.apr,
       id: rawFarm.farm_id,
       pair: {
         first: rawFarm.pool.token_symbols[0].split('-')[0].replace("w", "").toUpperCase(),
         second: rawFarm.pool.token_symbols[1].split('-')[0].replace("w", "").toUpperCase(),
       },
+      provider: "REF",
       status: status,
     };
   }, []);
@@ -55,11 +58,10 @@ export default function useFarmsList(): Options {
   return { farms };
 }
 
-const sortByStatus = (farms: Farm[]): Farm[] => {
-  return farms.sort((a,b) => {
+const sortByStatus = (farms: IFarm[]): IFarm[] =>
+  farms.sort((a, b) => {
     if (a.status === "active") {
       return -1;
-    } 
+    }
     return 1;
   });
-}

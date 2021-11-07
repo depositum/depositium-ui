@@ -1,20 +1,22 @@
-import { TokenName } from "../../hooks/useFarmsList";
 import React from "react";
-import { TokenIcon } from "../../features/farmings/FarmingItem";
+import { TokenIcon } from "../../components/TokenIcon";
+import { TokenName } from "../../hooks/useFarmsList";
 
 interface Props {
-  pair: {
-    first: TokenName;
-    second: TokenName;
-  };
+  token: TokenName;
   apr: string;
 }
 
-const CalculatorPairInfo: React.FunctionComponent<Props> = ({ pair, apr }) => (
+const CalculatorStakeInfo: React.FunctionComponent<Props> = ({
+  token,
+  apr,
+}) => (
   <div
     style={{
       alignItems: "center",
       display: "flex",
+      justifyContent: "space-between",
+      width: "100%",
     }}
   >
     <div
@@ -22,6 +24,8 @@ const CalculatorPairInfo: React.FunctionComponent<Props> = ({ pair, apr }) => (
         alignItems: "center",
         display: "flex",
         justifyContent: "space-between",
+        marginRight: 20,
+        width: 180,
       }}
     >
       <div
@@ -32,19 +36,9 @@ const CalculatorPairInfo: React.FunctionComponent<Props> = ({ pair, apr }) => (
           lineHeight: "26px",
         }}
       >
-        {`${pair.first}-${pair.second}`}
+        {`${token}`}
       </div>
-      <div
-        style={{
-          marginLeft: "24px",
-        }}
-      >
-        <TokenIcon token={pair.first} />
-        <TokenIcon
-          style={{ marginLeft: 10, marginRight: 32 }}
-          token={pair.second}
-        />
-      </div>
+      <TokenIcon token={token} />
     </div>
     <div
       style={{
@@ -77,4 +71,4 @@ const CalculatorPairInfo: React.FunctionComponent<Props> = ({ pair, apr }) => (
   </div>
 );
 
-export default React.memo(CalculatorPairInfo);
+export default React.memo(CalculatorStakeInfo);
