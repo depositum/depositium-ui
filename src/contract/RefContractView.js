@@ -4,7 +4,7 @@ import config from "../config";
 
 const view = (
   { methodName, args = {} },
-  accountId = config.refFarmingContractId,
+  accountId = config.farmingContractId,
 ) =>
   nearAPITestnet.connection.provider
     .query({
@@ -27,6 +27,12 @@ export const getFarms = async () =>
     args: { from_index: 0, limit: 100 },
     methodName: "list_farms",
   });
+
+export const getPools = async () =>
+  await view({
+    args: { from_index: 0, limit: 100 },
+    methodName: "get_pools",
+  }, config.financeContractId);
 
 export const getRewardsByAccountId = async ({
   accountId = walletAPI.getAccountId(),

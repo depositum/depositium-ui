@@ -35,8 +35,8 @@ export default function useFarmsList(): Options {
       apr: rawFarm.apr,
       id: rawFarm.farm_id,
       pair: {
-        first: rawFarm.pool.token_symbols[0].replace("w", ""),
-        second: rawFarm.pool.token_symbols[1].replace("w", ""),
+        first: rawFarm.pool.token_symbols[0].split('-')[0].replace("w", "").toUpperCase(),
+        second: rawFarm.pool.token_symbols[1].split('-')[0].replace("w", "").toUpperCase(),
       },
       status: status,
     };

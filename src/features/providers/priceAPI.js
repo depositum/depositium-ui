@@ -7,7 +7,7 @@ const NEAR_NOMINATION_EXP = 24; // todo get from lib
 const view = ({ methodName, args = {} }) =>
   nearAPITestnet.connection.provider
     .query({
-      account_id: config.refFinanceContractId,
+      account_id: config.financeContractId,
       args_base64: Buffer.from(JSON.stringify(args)).toString("base64"),
       finality: "final",
       method_name: methodName,

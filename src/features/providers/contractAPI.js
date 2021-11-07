@@ -8,7 +8,7 @@ const NEAR_NOMINATION_EXP = 24; // todo get from lib
 const view = ({ contractId, methodName, args = {} }) => {
   let nearAPI = nearAPITestnet;
 
-  if (contractId === config.refFinanceContractId) {
+  if (contractId === config.financeContractId) {
     nearAPI = nearAPIMainnet;
   }
 
@@ -27,7 +27,7 @@ const NEAR_USDT_POOL_ID = 4;
 export async function fetchPricesFromREF() {
   const res = await view({
     args: { pool_id: NEAR_USDT_POOL_ID },
-    contractId: config.refFinanceContractId,
+    contractId: config.financeContractId,
     methodName: "get_pool",
   });
   const usdtAmount = new Decimal(res.amounts[0]).div(Decimal.pow(10, 6));

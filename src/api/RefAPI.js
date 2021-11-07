@@ -1,17 +1,16 @@
 import { getFarmInfo, getLPTokenId, parsePoolView } from "../utils/RefApiUtils";
 import {
   getFarms,
+  getPools,
   getRewardsByAccountId,
   getSeeds,
   getStakedListByAccountId,
 } from "../contract/RefContractView";
 import walletAPI from "./WalletAPI";
+import config from "../config";
 
 // const allowedFarms = ["v2.ref-finance.near@79#0"];
-const allowedFarms = [
-  "ref-finance-101.testnet@36#0",
-  "ref-finance-101.testnet@17#5",
-];
+const allowedFarms = config.availableFarms;
 
 export const fetchPoolsByFarmIs = async poolIds => {
   const ids = poolIds.join("|");
@@ -48,36 +47,27 @@ export const fetchFarmList = async () => {
   const stakedList = walletAPI.isSignedIn()
     ? await getStakedListByAccountId({})
     : {};
-  const tokenPriceList = await fetchTokenPriceList();
+  // const tokenPriceList = await fetchTokenPriceList();
+  const tokenPriceList = {};
 
   const filteredFarms = farmList.filter(f => allowedFarms.includes(f.farm_id));
   const poolIds = filteredFarms.map(it => getLPTokenId(it.farm_id));
 
   let poolList = {};
-  const pools = await fetchPoolsByFarmIs(poolIds);
+  const pools = await getPools();
   if (pools) {
-    poolList = pools.reduce((obj, pool) => ({ ...obj, [pool.id]: pool }), {});
+    for (let poolId = 0; poolId < pools.length; poolId++) {
+      poolList[`${config.financeContractId}@${poolId}#0`] = { 
+        shares_total_supply: pools[poolId].shares_total_supply,
+        token_symbols: pools[poolId].token_account_ids 
+      };
+    }
   }
 
   return filteredFarms.map(f => {
-    const pool =
-      Object.keys(poolList).length === 0
-        ? {
-            amounts: ["", ""],
-            id: 0,
-            share: "0",
-            shares_total_supply: "0",
-            token0_ref_price: "0",
-            token_account_ids: ["", ""],
-            token_symbols: ["", ""],
-            total_fee: 0,
-            tvl: 0,
-          }
-        : poolList[getLPTokenId(f.farm_id)];
-
     return getFarmInfo(
       f,
-      pool,
+      poolList[f.farm_id],
       stakedList[f.seed_id],
       tokenPriceList,
       rewardList[f.reward_token],

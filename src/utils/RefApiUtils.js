@@ -69,11 +69,13 @@ export const getFarmInfo = (
   seed,
   lpTokenId,
 ) => {
-  const { shares_total_supply, tvl, token_account_ids } = pool;
+  const shares_total_supply = '0';
+  const tvl = '0';
   const poolTvl = tvl;
   const poolSts = Number(toReadableNumber(24, shares_total_supply));
   const userStaked = toReadableNumber(LP_TOKEN_DECIMALS, staked ?? "0");
-  const rewardToken = tokenPriceList[farm.reward_token] || { price: 6.35 };
+  const fakeTokenPriceList = { 'usdc-aromankov.testnet': { price: 1 } };
+  const rewardToken = fakeTokenPriceList[farm.reward_token];
   const rewardTokenPrice = rewardToken ? rewardToken.price || 0 : 0;
   const rewardNumber = toReadableNumber(rewardToken.decimals, reward) ?? "0";
   const seedAmount = seed ?? "0";
@@ -137,7 +139,6 @@ export const getFarmInfo = (
     rewardNumber,
     rewardToken,
     rewardsPerWeek,
-    tokenIds: token_account_ids,
     totalStaked,
     userRewardsPerWeek,
     userStaked,
