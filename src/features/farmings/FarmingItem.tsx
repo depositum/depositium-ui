@@ -55,7 +55,7 @@ const FarmingItem: React.FunctionComponent<Props> = ({ pair, status, apr }) => {
         borderRadius: "10px",
         borderWidth: "1px",
         boxShadow: "0px 4px 20px rgba(103, 103, 103, 0.25)",
-        mb: "25px",
+        mb: "26px",
         overflow: "hidden",
         width: "100%",
       }}
@@ -115,44 +115,58 @@ const FarmingItem: React.FunctionComponent<Props> = ({ pair, status, apr }) => {
         >
           <div
             style={{
-              fontSize: 20,
-              fontStyle: "normal",
-              fontWeight: 500,
-              lineHeight: "26px",
-              marginLeft: 16,
+              alignItems: "center",
+              display: "flex",
+              justifyContent: "space-between",
+              marginLeft: 14,
+              marginRight: 20,
+              width: 200,
             }}
           >
-            {`${pair.first}-${pair.second}`}
+            <div
+              style={{
+                fontSize: 20,
+                fontStyle: "normal",
+                fontWeight: 500,
+                lineHeight: "26px",
+              }}
+            >
+              {`${pair.first}-${pair.second}`}
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: 66,
+              }}
+            >
+              <TokenIcon token={pair.first} />
+              <TokenIcon token={pair.second} />
+            </div>
           </div>
           <div
             style={{
               alignItems: "center",
               display: "flex",
               justifyContent: "space-between",
-              marginLeft: "24px",
             }}
           >
-            <div>
-              <TokenIcon token={pair.first} />
-              <TokenIcon style={{ marginLeft: 10 }} token={pair.second} />
-            </div>
             <div
               style={{
                 border: "1px solid #000000",
                 height: 26,
-                marginLeft: 45,
-                marginRight: 30,
                 opacity: 0.2,
               }}
             />
             <div
               style={{
+                display: "flex",
                 fontSize: "20px",
                 fontStyle: "normal",
                 fontWeight: 500,
+                justifyContent: "center",
                 lineHeight: "26px",
-                marginLeft: "16px",
-                marginRight: "34px",
+                width: 160,
               }}
             >
               {`APR: ${apr}%`}

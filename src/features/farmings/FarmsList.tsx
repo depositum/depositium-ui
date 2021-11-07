@@ -7,7 +7,7 @@ const FarmsList: React.FunctionComponent = () => {
   const { farms } = useFarmsList();
 
   return (
-    <div style={{ height: "100%", padding: "0px 40px 40px 40px" }}>
+    <div style={{ height: "100%" }}>
       <div
         style={{
           display: "flex",
@@ -20,24 +20,40 @@ const FarmsList: React.FunctionComponent = () => {
         <StatusInfo color="#F0B622" label="Coming soon" />
       </div>
       {farms.length > 0 ? (
-        <Box
-          sx={{
-            alignContent: "flex-start",
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "space-between",
+        <div
+          style={{
+            height: "70vh",
+            margin: "0 auto",
+            marginBottom: 40,
+            overflow: "auto",
+            paddingLeft: 40,
+            paddingRight: 40,
           }}
         >
-          {farms.map(farm => (
-            <Box key={farm.id}>
-              <FarmingItem
-                status={farm.status}
-                pair={farm.pair}
-                apr={farm.apr}
-              />
-            </Box>
-          ))}
-        </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
+          >
+            {farms.map((farm, index) => (
+              <Box
+                key={farm.id}
+                sx={{
+                  ml: "13px",
+                  mr: "13px",
+                }}
+              >
+                <FarmingItem
+                  status={farm.status}
+                  pair={farm.pair}
+                  apr={farm.apr}
+                />
+              </Box>
+            ))}
+          </Box>
+        </div>
       ) : (
         <div
           style={{
