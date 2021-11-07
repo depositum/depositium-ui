@@ -1,10 +1,22 @@
-import React from "react";
-import useFarmsList from "../../hooks/useFarmsList";
+import React, { useCallback } from "react";
+import useFarmsList, { IFarm } from "../../hooks/useFarmsList";
 import { Box, CircularProgress } from "@mui/material";
 import FarmingItem from "./FarmingItem";
+import useStakesList, { IStake } from "../../hooks/useStakesList";
+import StakingItem from "./StakingItem";
 
-const FarmsList: React.FunctionComponent = () => {
+const StrategiesList: React.FunctionComponent = () => {
   const { farms } = useFarmsList();
+  const { stakes } = useStakesList();
+
+  const strategyItem = useCallback((item: IFarm | IStake) => {
+    switch (item._type) {
+      case "stake":
+        return <StakingItem stake={item} />;
+      case "farm":
+        return <FarmingItem farm={item} />;
+    }
+  }, []);
 
   return (
     <div style={{ height: "100%" }}>
@@ -37,19 +49,15 @@ const FarmsList: React.FunctionComponent = () => {
               justifyContent: "center",
             }}
           >
-            {farms.map((farm, index) => (
+            {[...farms, ...stakes].map((item, index) => (
               <Box
-                key={farm.id}
+                key={item.id}
                 sx={{
                   ml: "13px",
                   mr: "13px",
                 }}
               >
-                <FarmingItem
-                  status={farm.status}
-                  pair={farm.pair}
-                  apr={farm.apr}
-                />
+                {strategyItem(item)}
               </Box>
             ))}
           </Box>
@@ -110,4 +118,4 @@ const StatusInfo: React.FunctionComponent<StatusInfoProps> = ({
   </div>
 );
 
-export default React.memo(FarmsList);
+export default React.memo(StrategiesList);

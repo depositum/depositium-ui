@@ -1,32 +1,17 @@
-import React, { CSSProperties, useCallback, useMemo, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Box, Button, Card, Modal, styled } from "@mui/material";
 import CalculatorIcon from "../../icons/CalculatorIcon";
-import { FarmStatus, TokenName } from "../../hooks/useFarmsList";
 import CalculatorModal from "../../modals/CalculatorModal/CalculatorModal";
 import { startStrategy } from "../strategyItem/strategyItemSlice";
+import { IStake } from "../../hooks/useStakesList";
+import { TokenIcon } from "../../components/TokenIcon";
 
 interface Props {
-  pair: {
-    first: TokenName;
-    second: TokenName;
-  };
-  status: FarmStatus;
-  apr: string;
+  stake: IStake;
 }
 
-const FarmingItem: React.FunctionComponent<Props> = ({ pair, status, apr }) => {
-  const statusColor = useMemo(() => {
-    switch (status) {
-      case "in-progress":
-        return "#00D254";
-      case "active":
-        return "#00ADD2";
-      case "soon":
-        return "#F0B622";
-    }
-  }, [status]);
-
+const FarmingItem: React.FunctionComponent<Props> = ({ stake }) => {
   // Calculator control
   const [calculatorVisible, setCalculatorVisible] = useState(false);
 
@@ -62,7 +47,7 @@ const FarmingItem: React.FunctionComponent<Props> = ({ pair, status, apr }) => {
     >
       <Box
         sx={{
-          backgroundColor: statusColor,
+          backgroundColor: "#FFFFFF",
           height: "8px",
           width: "100%",
         }}
@@ -90,7 +75,7 @@ const FarmingItem: React.FunctionComponent<Props> = ({ pair, status, apr }) => {
               marginLeft: "14px",
             }}
           >
-            Farming
+            {`${stake.provider} Staking`}
           </div>
           <CalculateButton
             onClick={onOpenCalculator}
@@ -131,18 +116,9 @@ const FarmingItem: React.FunctionComponent<Props> = ({ pair, status, apr }) => {
                 lineHeight: "26px",
               }}
             >
-              {`${pair.first}-${pair.second}`}
+              {`${stake.token}`}
             </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: 66,
-              }}
-            >
-              <TokenIcon token={pair.first} />
-              <TokenIcon token={pair.second} />
-            </div>
+            <TokenIcon token={stake.token} />
           </div>
           <div
             style={{
@@ -169,7 +145,7 @@ const FarmingItem: React.FunctionComponent<Props> = ({ pair, status, apr }) => {
                 width: 160,
               }}
             >
-              {`APR: ${apr}%`}
+              {`APR: ${stake.apr}%`}
             </div>
           </div>
         </div>
@@ -181,37 +157,13 @@ const FarmingItem: React.FunctionComponent<Props> = ({ pair, status, apr }) => {
         aria-describedby="parent-modal-description"
       >
         <CalculatorModal
-          pair={pair}
-          apr={apr}
+          strategy={stake}
           onClose={onCloseCalculator}
           onStartStrategy={onStartStrategy}
         />
       </Modal>
     </Card>
   );
-};
-
-interface TokenIconProps {
-  token: TokenName;
-  style?: CSSProperties;
-}
-
-export const TokenIcon: React.FunctionComponent<TokenIconProps> = ({
-  token,
-  style,
-}) => {
-  const tokenIconSrc = useMemo(() => {
-    switch (token) {
-      case "REF":
-        return "./icons/ref.png";
-      case "NEAR":
-        return "./icons/near.png";
-      case "USDT":
-        return "./icons/usdt.png";
-    }
-  }, [token]);
-
-  return <img style={style} src={tokenIconSrc} height={28} width={28} />;
 };
 
 const CalculateButton = styled(Button)({
