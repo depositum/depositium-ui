@@ -18,6 +18,8 @@ export interface IFarm {
   id: number;
   apr: string;
   pair: { first: TokenName; second: TokenName };
+  depositAmount: number;
+  profitAmount: number;
   status: FarmStatus;
 }
 
@@ -53,6 +55,8 @@ export default function useFarmsList(): Options {
           .replace("wrap_", "")
           .toUpperCase(),
       },
+      depositAmount: 15,
+      profitAmount: 3,
       provider: "REF Farming",
       status: status,
     };

@@ -5,6 +5,7 @@ import { startStrategy } from "../strategyItem/strategyItemSlice";
 import { IStake } from "../../hooks/useStakesList";
 import { TokenIcon } from "../../components/TokenIcon";
 import StrategyTitle from "../../components/Strategy/StrategyTitle";
+import StrategyProfit from "../../components/Strategy/StrategyProfit";
 
 interface Props {
   stake: IStake;
@@ -115,6 +116,10 @@ const StakingItem: React.FunctionComponent<Props> = ({ stake }) => {
             </div>
           </div>
         </div>
+        <StrategyProfit
+          depositAmount={stake.depositAmount}
+          profitAmount={stake.profitAmount}
+        />
       </Box>
     </Card>
   );

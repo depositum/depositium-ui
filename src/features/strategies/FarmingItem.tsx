@@ -5,6 +5,7 @@ import { IFarm } from "../../hooks/useFarmsList";
 import { startStrategy } from "../strategyItem/strategyItemSlice";
 import { TokenIcon } from "../../components/TokenIcon";
 import StrategyTitle from "../../components/Strategy/StrategyTitle";
+import StrategyProfit from "../../components/Strategy/StrategyProfit";
 
 interface Props {
   farm: IFarm;
@@ -153,6 +154,10 @@ const FarmingItem: React.FunctionComponent<Props> = ({ farm }) => {
             </div>
           </div>
         </div>
+        <StrategyProfit
+          depositAmount={farm.depositAmount}
+          profitAmount={farm.profitAmount}
+        />
       </Box>
     </Card>
   );
