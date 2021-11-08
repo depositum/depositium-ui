@@ -34,8 +34,10 @@ export default function useFarmsList(): Options {
     console.log(rawFarm);
     const activeFarms = config.activeFarms;
 
-    let status: FarmStatus = "soon";
-    if (activeFarms.includes(rawFarm.farm_id)) {
+    let status: FarmStatus;
+    if (rawFarm.farm_status === "InProgress") {
+      status = "in-progress";
+    } else if (activeFarms.includes(rawFarm.farm_id)) {
       status = "active";
     } else {
       status = "soon";
@@ -44,6 +46,7 @@ export default function useFarmsList(): Options {
     return {
       _type: "farm",
       apr: rawFarm.apr,
+      depositAmount: 15,
       id: rawFarm.farm_id,
       pair: {
         first: rawFarm.pool.token_symbols[0]
@@ -55,7 +58,6 @@ export default function useFarmsList(): Options {
           .replace("wrap_", "")
           .toUpperCase(),
       },
-      depositAmount: 15,
       profitAmount: 3,
       provider: "REF Farming",
       status: status,

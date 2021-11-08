@@ -1,5 +1,7 @@
 import * as math from "mathjs";
 import { BigNumber } from "bignumber.js";
+import walletAPI from "../api/WalletAPI";
+import { getStrategyState } from "../contract/RefContractView";
 
 const LP_TOKEN_DECIMALS = 24;
 
@@ -60,7 +62,7 @@ export const parsePoolView = pool => ({
 export const getLPTokenId = farm_id =>
   farm_id.slice(farm_id.indexOf("@") + 1, farm_id.lastIndexOf("#"));
 
-export const getFarmInfo = (
+export const getFarmInfo = async (
   farm,
   pool,
   staked,
@@ -122,8 +124,17 @@ export const getFarmInfo = (
         .multipliedBy(100)
         .toFixed()
 
-  apr = '54.43';  
+  apr = '54.43';
   if (farm.farm_status === "Created") farm.farm_status = "Pending";
+
+  try {
+    const strategyState = walletAPI.isSignedIn() ? await getStrategyState({ farmId: farm.farm_id }) : 0
+    if (strategyState > 0) {
+      farm.farm_status = "InProgress";
+    }
+  } catch (e) {
+    console.log(e);
+  }
 
   return {
     ...farm,

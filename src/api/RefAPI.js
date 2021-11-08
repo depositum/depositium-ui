@@ -57,22 +57,26 @@ export const fetchFarmList = async () => {
   const pools = await getPools();
   if (pools) {
     for (let poolId = 0; poolId < pools.length; poolId++) {
-      poolList[`${config.financeContractId}@${poolId}#1`] = { 
+      poolList[`${config.financeContractId}@${poolId}#1`] = {
         shares_total_supply: pools[poolId].shares_total_supply,
-        token_symbols: pools[poolId].token_account_ids 
+        token_symbols: pools[poolId].token_account_ids,
       };
     }
   }
 
-  return filteredFarms.map(f => {
-    return getFarmInfo(
-      f,
-      poolList[f.farm_id],
-      stakedList[f.seed_id],
-      tokenPriceList,
-      rewardList[f.reward_token],
-      seeds[f.seed_id],
-      getLPTokenId(f.farm_id),
+  let farmsInfo = [];
+  for (const farm of filteredFarms) {
+    farmsInfo.push(
+      await getFarmInfo(
+        farm,
+        poolList[farm.farm_id],
+        stakedList[farm.seed_id],
+        tokenPriceList,
+        rewardList[farm.reward_token],
+        seeds[farm.seed_id],
+        getLPTokenId(farm.farm_id),
+      ),
     );
-  });
+  }
+  return farmsInfo;
 };
