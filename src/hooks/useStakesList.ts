@@ -7,6 +7,8 @@ export interface IStake {
   id: number;
   apr: string;
   token: TokenName;
+  depositAmount: number;
+  profitAmount: number;
   status: FarmStatus;
 }
 
@@ -19,18 +21,22 @@ export default function useStakesList(): Options {
     {
       _type: "stake",
       apr: "10.5",
+      depositAmount: 12,
       id: 1,
+      profitAmount: 9,
       provider: "Staking",
-      token: "Metapool stNEAR",
       status: "soon",
+      token: "Metapool stNEAR",
     },
     {
       _type: "stake",
       apr: "50.34",
+      depositAmount: 7,
       id: 2,
+      profitAmount: 3,
       provider: "REF Farming",
-      token: "REF-NEAR",
       status: "soon",
+      token: "REF-NEAR",
     },
   ]);
 

@@ -84,15 +84,19 @@ export const fetchFarmList = async () => {
     }
   }
 
-  return filteredFarms.map(f => {
-    return getFarmInfo(
-      f,
-      poolList[f.farm_id],
-      stakedList[f.seed_id],
-      tokenPriceList,
-      rewardList[f.reward_token],
-      seeds[f.seed_id],
-      getLPTokenId(f.farm_id),
+  let farmsInfo = [];
+  for (const farm of filteredFarms) {
+    farmsInfo.push(
+      await getFarmInfo(
+        farm,
+        poolList[farm.farm_id],
+        stakedList[farm.seed_id],
+        tokenPriceList,
+        rewardList[farm.reward_token],
+        seeds[farm.seed_id],
+        getLPTokenId(farm.farm_id),
+      ),
     );
-  });
+  }
+  return farmsInfo;
 };

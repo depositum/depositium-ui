@@ -29,17 +29,22 @@ export const getFarms = async () =>
   });
 
 export const getPools = async () =>
-  await view({
-    args: { from_index: 0, limit: 100 },
-    methodName: "get_pools",
-  }, config.financeContractId);
+  await view(
+    {
+      args: { from_index: 0, limit: 100 },
+      methodName: "get_pools",
+    },
+    config.financeContractId,
+  );
 
-
-export const storageBalanceOf = async (accountId) =>
-  await view({
-    args: { account_id: accountId },
-    methodName: "storage_balance_of",
-  }, config.financeContractId);
+export const storageBalanceOf = async accountId =>
+  await view(
+    {
+      args: { account_id: accountId },
+      methodName: "storage_balance_of",
+    },
+    config.financeContractId,
+  );
 
 export const getRewardsByAccountId = async ({
   accountId = walletAPI.getAccountId(),
@@ -56,3 +61,15 @@ export const getStakedListByAccountId = async ({
     args: { account_id: accountId },
     methodName: "list_user_seeds",
   }, config.farmingContractId);
+
+export const getStrategyState = async ({
+  farmId,
+  accountId = walletAPI.getAccountId(),
+}) =>
+  await view(
+    {
+      args: { account_id: accountId, farm_id: farmId },
+      methodName: "get_user_rps",
+    },
+    config.financeContractId,
+  );

@@ -2,7 +2,14 @@ import { useCallback, useEffect, useState } from "react";
 import { fetchFarmList } from "../api/RefAPI";
 import config from "../config";
 
-export type TokenName = "REF" | "NEAR" | "USDT" | "stNEAR" | "REF-NEAR" | "Metapool stNEAR" | "USDC";
+export type TokenName =
+  | "REF"
+  | "NEAR"
+  | "USDT"
+  | "stNEAR"
+  | "REF-NEAR"
+  | "Metapool stNEAR"
+  | "USDC";
 export type FarmStatus = "in-progress" | "active" | "soon";
 
 export interface IFarm {
@@ -11,6 +18,8 @@ export interface IFarm {
   id: number;
   apr: string;
   pair: { first: TokenName; second: TokenName };
+  depositAmount: number;
+  profitAmount: number;
   status: FarmStatus;
 }
 
@@ -25,8 +34,10 @@ export default function useFarmsList(): Options {
     console.log(rawFarm);
     const activeFarms = config.activeFarms;
 
-    let status: FarmStatus = "soon";
-    if (activeFarms.includes(rawFarm.farm_id)) {
+    let status: FarmStatus;
+    if (rawFarm.farm_status === "InProgress") {
+      status = "in-progress";
+    } else if (activeFarms.includes(rawFarm.farm_id)) {
       status = "active";
     } else {
       status = "soon";
@@ -35,12 +46,20 @@ export default function useFarmsList(): Options {
     return {
       _type: "farm",
       apr: rawFarm.apr,
+      depositAmount: 15,
       id: rawFarm.farm_id,
       pair: {
-        first: rawFarm.pool.token_symbols[0].split('-')[0].replace("wrap_", "").toUpperCase(),
-        second: rawFarm.pool.token_symbols[1].split('-')[0].replace("wrap_", "").toUpperCase(),
+        first: rawFarm.pool.token_symbols[0]
+          .split("-")[0]
+          .replace("wrap_", "")
+          .toUpperCase(),
+        second: rawFarm.pool.token_symbols[1]
+          .split("-")[0]
+          .replace("wrap_", "")
+          .toUpperCase(),
       },
-      provider: "REF",
+      profitAmount: 3,
+      provider: "REF Farming",
       status: status,
     };
   }, []);
