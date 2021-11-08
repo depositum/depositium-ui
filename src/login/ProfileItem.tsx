@@ -10,11 +10,10 @@ import Logout from "@mui/icons-material/Logout";
 import { useCallback, useState } from "react";
 import walletAPI from "../api/WalletAPI";
 import BottomArrowIcon from "../icons/BottomArrowIcon";
-import NotificationIcon from "../icons/NotificationIcon";
 import { ArrowCircleDown } from "@mui/icons-material";
 import { wrapNear } from "../api/NearAPI";
 import DepositModal from "../modals/DepositModal/DepositModal";
-import { Modal } from "@mui/material";
+import { Button, Modal, styled } from "@mui/material";
 
 const ProfileItem: React.FunctionComponent = () => {
   // Deposit modal visibility and control
@@ -53,7 +52,13 @@ const ProfileItem: React.FunctionComponent = () => {
   return (
     <React.Fragment>
       <Box sx={{ alignItems: "center", display: "flex", textAlign: "center" }}>
-        <NotificationIcon />
+        <DepositButton
+          onClick={onOpenDepositModal}
+          variant="text"
+          startIcon={<ArrowCircleDown fontSize="small" />}
+        >
+          Deposit
+        </DepositButton>
         <div
           style={{
             border: "1px solid #CADEEF",
@@ -118,12 +123,6 @@ const ProfileItem: React.FunctionComponent = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={onOpenDepositModal}>
-          <ListItemIcon>
-            <ArrowCircleDown fontSize="small" />
-          </ListItemIcon>
-          Deposit
-        </MenuItem>
         <MenuItem onClick={onSignOut}>
           <ListItemIcon>
             <Logout fontSize="small" />
@@ -142,5 +141,16 @@ const ProfileItem: React.FunctionComponent = () => {
     </React.Fragment>
   );
 };
+
+const DepositButton = styled(Button)({
+  color: "#FFFFFF",
+  fontSize: 14,
+  fontStyle: "normal",
+  fontWeight: 600,
+  letterSpacing: "0.2px",
+  lineHeight: "20px",
+  padding: "6px",
+  textTransform: "none",
+});
 
 export default React.memo(ProfileItem);
