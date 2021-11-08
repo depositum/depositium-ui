@@ -19,7 +19,7 @@ const StrategiesList: React.FunctionComponent = () => {
   }, []);
 
   return (
-    <div style={{ height: "100%" }}>
+    <>
       <div
         style={{
           display: "flex",
@@ -32,36 +32,26 @@ const StrategiesList: React.FunctionComponent = () => {
         <StatusInfo color="#F0B622" label="Coming soon" />
       </div>
       {farms.length > 0 ? (
-        <div
-          style={{
-            height: "70vh",
-            margin: "0 auto",
-            marginBottom: 40,
-            overflow: "auto",
-            paddingLeft: 40,
-            paddingRight: 40,
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            mb: 2.5,
+            mx: 2.5,
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "center",
-            }}
-          >
-            {[...farms, ...stakes].map((item, index) => (
-              <Box
-                key={item.id}
-                sx={{
-                  ml: "13px",
-                  mr: "13px",
-                }}
-              >
-                {strategyItem(item)}
-              </Box>
-            ))}
-          </Box>
-        </div>
+          {[...farms, ...stakes].map((item, index) => (
+            <Box
+              key={item.id}
+              sx={{
+                mx: 2.5,
+              }}
+            >
+              {strategyItem(item)}
+            </Box>
+          ))}
+        </Box>
       ) : (
         <div
           style={{
@@ -74,7 +64,7 @@ const StrategiesList: React.FunctionComponent = () => {
           <CircularProgress color="success" />
         </div>
       )}
-    </div>
+    </>
   );
 };
 

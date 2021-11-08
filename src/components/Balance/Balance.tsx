@@ -3,11 +3,19 @@ import { TokenName } from "../../hooks/useFarmsList";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import useNearBalance from "../../hooks/useNearBalance";
+import { Box } from "@mui/material";
 
 const Balance: React.FunctionComponent = () => (
-  <div>
+  <Box
+    sx={{
+      backgroundColor: "#0097A7",
+      height: "100%",
+      px: 5,
+      py: 8,
+    }}
+  >
     <NearBalance />
-  </div>
+  </Box>
 );
 
 const NearBalance: React.FunctionComponent = () => {
