@@ -47,7 +47,7 @@ export const getRewardsByAccountId = async ({
   view({
     args: { account_id: accountId },
     methodName: "list_rewards",
-  });
+  }, config.farmingContractId);
 
 export const getStakedListByAccountId = async ({
   accountId = walletAPI.getAccountId(),
@@ -55,4 +55,4 @@ export const getStakedListByAccountId = async ({
   await view({
     args: { account_id: accountId },
     methodName: "list_user_seeds",
-  });
+  }, config.farmingContractId);
