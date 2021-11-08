@@ -75,6 +75,7 @@ export const wrapNear = async amount => {
 export const startStrategy = async amount => {
     const transactions = [];
 
+    console.log('startStrategy', amount);
     const accoundId = wallet.getAccountId();
     const accoundPrefix = accoundId.split(".")[0];
     const subAccId = `${accoundPrefix}.${config.depositiumContractId}`;
@@ -85,7 +86,6 @@ export const startStrategy = async amount => {
                 amount: "4",
                 args: {
                     accound_sub_id: accoundPrefix,
-                    amount: utils.format.parseNearAmount(amount),
                 },
                 gas: "300000000000000",
                 methodName: "create",
@@ -139,8 +139,9 @@ export const startStrategy = async amount => {
         functionCalls: [
             {
                 args: {
+                    account_id: accoundId,
                     sub_account_id: subAccId,
-                    amount: "10",
+                    amount: utils.format.parseNearAmount(amount),
                 },
                 gas: "300000000000000",
                 methodName: "start_strategy",

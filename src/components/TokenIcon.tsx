@@ -10,6 +10,7 @@ export const TokenIcon: React.FunctionComponent<Props> = ({ token, style }) =>
   useMemo(() => {
     switch (token) {
       case "REF":
+      case "REF-NEAR":
         return (
           <img style={style} src="./icons/ref.png" height={28} width={28} />
         );
@@ -17,11 +18,15 @@ export const TokenIcon: React.FunctionComponent<Props> = ({ token, style }) =>
         return (
           <img style={style} src="./icons/near.png" height={28} width={28} />
         );
+      case "USDC":
+        return (
+          <img style={style} src="./icons/usdc.svg" height={28} width={28} />
+        );
       case "USDT":
         return (
           <img style={style} src="./icons/usdt.png" height={28} width={28} />
         );
-      case "stNEAR":
+      case "Metapool stNEAR":
         return (
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -57,7 +57,7 @@ export const fetchFarmList = async () => {
   const pools = await getPools();
   if (pools) {
     for (let poolId = 0; poolId < pools.length; poolId++) {
-      poolList[`${config.financeContractId}@${poolId}#0`] = { 
+      poolList[`${config.financeContractId}@${poolId}#1`] = { 
         shares_total_supply: pools[poolId].shares_total_supply,
         token_symbols: pools[poolId].token_account_ids 
       };

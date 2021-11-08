@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { fetchFarmList } from "../api/RefAPI";
 import config from "../config";
 
-export type TokenName = "REF" | "NEAR" | "USDT" | "stNEAR" | "REF-NEAR" | "Metapool stNEAR";
+export type TokenName = "REF" | "NEAR" | "USDT" | "stNEAR" | "REF-NEAR" | "Metapool stNEAR" | "USDC";
 export type FarmStatus = "in-progress" | "active" | "soon";
 
 export interface IFarm {
