@@ -1,11 +1,10 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useDispatch } from "react-redux";
-import { Box, Button, Card, Modal, styled } from "@mui/material";
-import CalculatorIcon from "../../icons/CalculatorIcon";
+import { Box, Card } from "@mui/material";
 import { IFarm } from "../../hooks/useFarmsList";
-import CalculatorModal from "../../modals/CalculatorModal/CalculatorModal";
 import { startStrategy } from "../strategyItem/strategyItemSlice";
 import { TokenIcon } from "../../components/TokenIcon";
+import StrategyTitle from "../../components/Strategy/StrategyTitle";
 
 interface Props {
   farm: IFarm;
@@ -23,23 +22,12 @@ const FarmingItem: React.FunctionComponent<Props> = ({ farm }) => {
     }
   }, [farm.status]);
 
-  // Calculator control
-  const [calculatorVisible, setCalculatorVisible] = useState(false);
-
   const dispatch = useDispatch();
-
-  const onOpenCalculator = useCallback(() => {
-    setCalculatorVisible(true);
-  }, []);
-
-  const onCloseCalculator = useCallback(() => {
-    setCalculatorVisible(false);
-  }, []);
 
   const onStartStrategy = useCallback(
     (amount: string, strategyId: string) => {
-      console.log(`onStartStrategy ${amount} - ${strategyId}`)
-      dispatch(startStrategy({ strategyId: strategyId, amount }));
+      console.log(`onStartStrategy ${amount} - ${strategyId}`);
+      dispatch(startStrategy({ amount, strategyId: strategyId }));
     },
     [dispatch],
   );
@@ -98,40 +86,7 @@ const FarmingItem: React.FunctionComponent<Props> = ({ farm }) => {
           pt: "12px",
         }}
       >
-        <div
-          style={{
-            alignItems: "center",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <div
-            style={{
-              color: "#2D2D2D",
-              fontSize: "20px",
-              fontStyle: "normal",
-              fontWeight: "bold",
-              lineHeight: "26px",
-              marginLeft: "14px",
-            }}
-          >
-            {`${farm.provider} Farming`}
-          </div>
-          <CalculateButton
-            onClick={onOpenCalculator}
-            variant="text"
-            startIcon={<CalculatorIcon />}
-          >
-            Calculate
-          </CalculateButton>
-        </div>
-        <div
-          style={{
-            border: "1px solid #000000",
-            margin: "10px 14px 30px 14px ",
-            opacity: 0.1,
-          }}
-        />
+        <StrategyTitle strategy={farm} onStartStrategy={onStartStrategy} />
         <div
           style={{
             alignItems: "center",
@@ -199,31 +154,8 @@ const FarmingItem: React.FunctionComponent<Props> = ({ farm }) => {
           </div>
         </div>
       </Box>
-      <Modal
-        open={calculatorVisible}
-        onClose={onCloseCalculator}
-        aria-labelledby="parent-modal-title"
-        aria-describedby="parent-modal-description"
-      >
-        <CalculatorModal
-          strategy={farm}
-          onClose={onCloseCalculator}
-          onStartStrategy={onStartStrategy}
-        />
-      </Modal>
     </Card>
   );
 };
-
-const CalculateButton = styled(Button)({
-  color: "#0097A7",
-  fontSize: "12px",
-  fontStyle: "normal",
-  fontWeight: "bold",
-  lineHeight: "26px",
-  marginRight: "8px",
-  padding: "6px",
-  textTransform: "none",
-});
 
 export default React.memo(FarmingItem);

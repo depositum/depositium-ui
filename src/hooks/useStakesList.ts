@@ -21,16 +21,16 @@ export default function useStakesList(): Options {
       apr: "10.5",
       id: 1,
       provider: "Staking",
-      token: "Metapool stNEAR",
       status: "soon",
+      token: "Metapool stNEAR",
     },
     {
       _type: "stake",
       apr: "50.34",
       id: 2,
       provider: "REF Farming",
-      token: "REF-NEAR",
       status: "soon",
+      token: "REF-NEAR",
     },
   ]);
 
