@@ -9,6 +9,7 @@ import * as Yup from "yup";
 import { IStake } from "../../hooks/useStakesList";
 import CalculatorFarmInfo from "./CalculatorFarmInfo";
 import CalculatorStakeInfo from "./CalculatorStakeInfo";
+import walletAPI from "../../api/WalletAPI";
 
 const calculateSchema = Yup.object().shape({
   amount: Yup.number()
@@ -129,7 +130,11 @@ const CalculatorModal: React.FunctionComponent<Props> = ({
                   marginTop: 26,
                 }}
               >
-                {strategy.status == "active" && <StartButton onClick={() => handleSubmit()}>Start</StartButton>}
+                {strategy.status == "active" && walletAPI.isSignedIn() && (
+                  <StartButton onClick={() => handleSubmit()}>
+                    Start
+                  </StartButton>
+                )}
               </div>
             </Form>
           </div>
