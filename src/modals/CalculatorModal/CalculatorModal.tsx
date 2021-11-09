@@ -131,9 +131,7 @@ const CalculatorModal: React.FunctionComponent<Props> = ({
                 }}
               >
                 {strategy.status == "active" && walletAPI.isSignedIn() && (
-                  <StartButton onClick={() => handleSubmit()}>
-                    Start
-                  </StartButton>
+                  <StartButton onClick={handleSubmit}>Start</StartButton>
                 )}
               </div>
             </Form>

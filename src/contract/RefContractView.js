@@ -49,18 +49,24 @@ export const storageBalanceOf = async accountId =>
 export const getRewardsByAccountId = async ({
   accountId = walletAPI.getAccountId(),
 }) =>
-  view({
-    args: { account_id: accountId },
-    methodName: "list_rewards",
-  }, config.farmingContractId);
+  view(
+    {
+      args: { account_id: accountId },
+      methodName: "list_rewards",
+    },
+    config.farmingContractId,
+  );
 
 export const getStakedListByAccountId = async ({
   accountId = walletAPI.getAccountId(),
 }) =>
-  await view({
-    args: { account_id: accountId },
-    methodName: "list_user_seeds",
-  }, config.farmingContractId);
+  await view(
+    {
+      args: { account_id: accountId },
+      methodName: "list_user_seeds",
+    },
+    config.farmingContractId,
+  );
 
 export const getStrategyState = async ({
   farmId,

@@ -9,6 +9,6 @@ export default {
   wrapNearContractId: process.env.REACT_APP_WRAP_NEAR_CONTRACT_ID,
   financeContractId: process.env.REACT_APP_REF_FINANCE_CONTRACT_ID,
   farmingContractId: process.env.REACT_APP_FARMING_CONTRACT_ID,
-  activeFarms: process.env.REACT_APP_ACTIVE_FARMS.split(','),
-  availableFarms: process.env.REACT_APP_AVAILABLE_FARMS.split(','),
+  activeFarms: process.env.REACT_APP_ACTIVE_FARMS.split(","),
+  availableFarms: process.env.REACT_APP_AVAILABLE_FARMS.split(","),
 };

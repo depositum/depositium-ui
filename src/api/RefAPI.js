@@ -51,14 +51,13 @@ export const fetchFarmList = async () => {
     ? await getRewardsByAccountId({ accountId: subAccId })
     : {};
 
-
   const stakedList = walletAPI.isSignedIn()
     ? await getStakedListByAccountId({ accountId: subAccId })
     : {};
   // const tokenPriceList = await fetchTokenPriceList();
   const tokenPriceList = {
-    'usdc-aromankov.testnet': 1,
-    'wrap_near-aromankov.testnet': 10.6,
+    "usdc-aromankov.testnet": 1,
+    "wrap_near-aromankov.testnet": 10.6,
   };
 
   const filteredFarms = farmList.filter(f => allowedFarms.includes(f.farm_id));

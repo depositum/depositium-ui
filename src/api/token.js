@@ -25,10 +25,9 @@ export default class SpecialWallet extends WalletConnection {
       this._connectedAccount = new SpecialWalletAccount(
         this,
         this._near.connection,
-        this._authData.accountId
+        this._authData.accountId,
       );
     }
-
   }
 
   account() {
@@ -36,11 +35,7 @@ export default class SpecialWallet extends WalletConnection {
     return this._connectedAccount;
   }
 
-  createTransaction({
-    receiverId,
-    actions,
-    nonceOffset = 1,
-  }) {
+  createTransaction({ receiverId, actions, nonceOffset = 1 }) {
     this._checkConnectedAccount();
     return this._connectedAccount.createTransaction({
       receiverId,

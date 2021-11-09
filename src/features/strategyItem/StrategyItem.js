@@ -1,21 +1,21 @@
-import React from 'react';
-import {Box} from '@mui/material';
+import React from "react";
+import { Box } from "@mui/material";
 
 function Item(props) {
-  const {sx, ...other} = props;
+  const { sx, ...other } = props;
   return (
     <Box
       sx={{
-        borderBlock: 'solid',
+        borderBlock: "solid",
         // bgcolor: 'secondary.light',
-        borderColor: 'primary.main',
-        borderLeft: 'solid',
-        borderRight: 'solid',
-        borderWidth: '1px',
+        borderColor: "primary.main",
+        borderLeft: "solid",
+        borderRight: "solid",
+        borderWidth: "1px",
         fontSize: 19,
-        fontWeight: '700',
-        padding: '5px',
-        textAlign: 'center',
+        fontWeight: "700",
+        padding: "5px",
+        textAlign: "center",
         ...sx,
       }}
       {...other}
@@ -23,7 +23,7 @@ function Item(props) {
   );
 }
 
-const StrategyItem = ({farm}) => {
+const StrategyItem = ({ farm }) => {
   // const {depositAmount, profit, days} = useSelector(state =>
   //   selectStrategyItem(state, strategyId),
   // );
@@ -32,21 +32,21 @@ const StrategyItem = ({farm}) => {
   console.log(farm);
 
   return (
-    <div style={{width: '100%'}}>
+    <div style={{ width: "100%" }}>
       <Box
         sx={{
-          display: 'grid',
+          display: "grid",
           gap: 1,
           gridTemplateAreas: `"strategyType . . strategyName"
                 "depositInput depositInput depositProfit depositProfit"
                 "apr period period start"
                 `,
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gridTemplateRows: 'auto',
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gridTemplateRows: "auto",
         }}
       >
-        <Item sx={{gridArea: 'strategyType'}}>Farming</Item>
-        <Item sx={{gridArea: 'strategyName'}}>{farm.pairName}</Item>
+        <Item sx={{ gridArea: "strategyType" }}>Farming</Item>
+        <Item sx={{ gridArea: "strategyName" }}>{farm.pairName}</Item>
 
         {/*  <Item sx={{gridArea: 'depositInput'}}>*/}
         {/*    <Box*/}
@@ -95,10 +95,10 @@ const StrategyItem = ({farm}) => {
         {/*  </Item>*/}
         <Item
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gridArea: 'depositProfit',
-            justifyContent: 'center',
+            display: "flex",
+            flexDirection: "column",
+            gridArea: "depositProfit",
+            justifyContent: "center",
           }}
         >
           {/*Profit: ~{nearPrice.times(profit || 0).toFixed(2)}$*/}
