@@ -139,9 +139,9 @@ const CalculatorModal: React.FunctionComponent<Props> = ({
                       Start
                     </StartButton>
                   )}
-                  {/*{strategy.status == "in-progress" && (*/}
-                  <TakeOutButton onClick={onTakeOut}>Take Out</TakeOutButton>
-                  {/*)}*/}
+                  {strategy.status == "in-progress" && (
+                    <TakeOutButton onClick={onTakeOut}>Take Out</TakeOutButton>
+                  )}
                 </div>
               )}
             </Form>
