@@ -27,7 +27,7 @@ const StrategiesList: React.FunctionComponent = () => {
         }}
       >
         <StatusInfo color="#00D254" label="In progress" />
-        <StatusInfo color="#00ADD2" label="Active" />
+        <StatusInfo color="#00ADD2" label="Open" />
         <StatusInfo color="#F0B622" label="Coming soon" />
       </Box>
       {farms.length > 0 ? (
