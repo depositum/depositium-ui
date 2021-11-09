@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { fetchFarmList } from "../api/RefAPI";
 import config from "../config";
+import { fetchFiatRate } from "../api/NearAPI";
+import { store } from "../store";
+import { updateRate } from "../store/reducers/Balance/action";
 
 export type TokenName =
   | "REF"
@@ -66,6 +69,11 @@ export default function useFarmsList(): Options {
 
   useEffect(() => {
     async function fetchData() {
+      // TODO: Workaround for not authorized users to fix calculating on the modals
+      const rate = await fetchFiatRate();
+      store.dispatch(updateRate(rate.near.usd));
+
+      // Fetch farms
       const response = await fetchFarmList();
       setFarms(sortByStatus(response.map(formatFarmData)));
     }
