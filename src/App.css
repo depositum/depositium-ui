@@ -1,17 +1,8 @@
 .App {
-  /* text-align: center; */
+    background-color: #2D2D2D;
+    height: 100vh;
 }
 
-/* .Header {
-  position: fixed;
-  height: 100px;
-  background-color: bisque;
-}
+.HeaderWrapper {
 
-.Balance {
-  background-color: cadetblue;
 }
-
-.Strategies {
-  background-color:darkcyan;
-} */
