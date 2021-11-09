@@ -20,11 +20,11 @@ const CalculatorDepositBlock: React.FunctionComponent<Props> = ({
   );
 
   const amountFiat = useMemo(() => {
-    if (Number(amount)) {
+    if (errorMessage === undefined && Number(amount)) {
       return (Number(amount) * store.getState().balance.rate).toFixed(2);
     }
     return 0;
-  }, [amount]);
+  }, [amount, errorMessage]);
 
   return (
     <div>

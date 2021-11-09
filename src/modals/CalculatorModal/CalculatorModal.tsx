@@ -123,6 +123,7 @@ const CalculatorModal: React.FunctionComponent<Props> = ({
                   days={values.days}
                   apr={Number(strategy.apr)}
                   amount={values.amount}
+                  amountErrorMessage={errors.amount}
                   onDaysChange={handleChange("days")}
                 />
               </div>
