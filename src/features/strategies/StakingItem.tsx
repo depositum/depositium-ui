@@ -117,10 +117,12 @@ const StakingItem: React.FunctionComponent<Props> = ({ stake }) => {
             </div>
           </div>
         </div>
-        <StrategyProfit
-          depositAmount={stake.depositAmount}
-          profitAmount={stake.profitAmount}
-        />
+        {stake.status === "in-progress" && (
+          <StrategyProfit
+            depositAmount={stake.depositAmount}
+            profitAmount={stake.profitAmount}
+          />
+        )}
       </Box>
     </Card>
   );

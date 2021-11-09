@@ -154,10 +154,12 @@ const FarmingItem: React.FunctionComponent<Props> = ({ farm }) => {
             </div>
           </div>
         </div>
-        <StrategyProfit
-          depositAmount={farm.depositAmount}
-          profitAmount={farm.profitAmount}
-        />
+        {farm.status === "in-progress" && (
+          <StrategyProfit
+            depositAmount={farm.depositAmount}
+            profitAmount={farm.profitAmount}
+          />
+        )}
       </Box>
     </Card>
   );

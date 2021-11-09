@@ -1,5 +1,7 @@
-import React, { useMemo } from "react";
+import React, { ReactChild, useMemo } from "react";
 import { store } from "../../store";
+import { ArrowCircleDown, MonetizationOn } from "@mui/icons-material";
+import { Box } from "@mui/material";
 
 interface Props {
   depositAmount: number;
@@ -18,18 +20,34 @@ const StrategyProfit: React.FunctionComponent<Props> = ({
         opacity: 0.1,
       }}
     />
-    <InfoBlock label="Deposit" amount={depositAmount} />
-    <InfoBlock label="Profit" amount={profitAmount} />
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        ml: "14px",
+        mr: "20px",
+        mt: "12px",
+      }}
+    >
+      <InfoBlock
+        icon={<ArrowCircleDown fontSize="large" />}
+        amount={depositAmount}
+      />
+      <InfoBlock
+        icon={<MonetizationOn fontSize="large" />}
+        amount={profitAmount}
+      />
+    </Box>
   </>
 );
 
 interface InfoBlockProps {
-  label: string;
+  icon: ReactChild;
   amount: number;
 }
 
 const InfoBlock: React.FunctionComponent<InfoBlockProps> = ({
-  label,
+  icon,
   amount,
 }) => {
   const amountFiat = useMemo(() => {
@@ -40,28 +58,13 @@ const InfoBlock: React.FunctionComponent<InfoBlockProps> = ({
   }, [amount]);
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         alignItems: "center",
         display: "flex",
-        justifyContent: "space-between",
-        marginLeft: 14,
-        marginRight: 20,
-        marginTop: 12,
       }}
     >
-      <div
-        style={{
-          color: "#2D2D2D",
-          fontSize: 20,
-          fontStyle: "normal",
-          fontWeight: "bold",
-          lineHeight: "20px",
-          opacity: 0.9,
-        }}
-      >
-        {`${label}:`}
-      </div>
+      <Box sx={{ alignItems: "center", mr: 2 }}>{icon}</Box>
       <div style={{ flexDirection: "column" }}>
         <div
           style={{
@@ -69,7 +72,7 @@ const InfoBlock: React.FunctionComponent<InfoBlockProps> = ({
             fontStyle: "normal",
             fontWeight: "bold",
             lineHeight: "20px",
-            textAlign: "end",
+            textAlign: "start",
             textTransform: "uppercase",
           }}
         >
@@ -82,13 +85,13 @@ const InfoBlock: React.FunctionComponent<InfoBlockProps> = ({
             fontWeight: 500,
             lineHeight: "26px",
             opacity: 0.5,
-            textAlign: "end",
+            textAlign: "start",
           }}
         >
           {`$${amountFiat} USD`}
         </div>
       </div>
-    </div>
+    </Box>
   );
 };
 
