@@ -110,12 +110,17 @@ export const fetchFarmList = async () => {
             .toNumber()
         : 0;
 
-    const strategyInProgress = walletAPI.isSignedIn()
-      ? (await getStrategyState({
-          accountId: subAccId,
-          farmId: farm.farm_id,
-        })) > 0
-      : false;
+    let strategyInProgress = false;
+    try {
+      strategyInProgress = walletAPI.isSignedIn()
+        ? (await getStrategyState({
+            accountId: subAccId,
+            farmId: farm.farm_id,
+          })) > 0
+        : false;
+    } catch (e) {
+      console.log(e);
+    }
 
     farmsInfo.push({
       ...farmInfo,
