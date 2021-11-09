@@ -71,6 +71,7 @@ const StrategyTitle: React.FunctionComponent<Props> = ({
           strategy={strategy}
           onClose={onCloseCalculator}
           onStartStrategy={onStartStrategy}
+          onTakeOut={onCloseCalculator}
         />
       </Modal>
     </>

@@ -23,12 +23,14 @@ interface Props {
   strategy: IFarm | IStake;
   onClose: () => void;
   onStartStrategy: (amount: string, strategyId: string) => void;
+  onTakeOut: () => void;
 }
 
 const CalculatorModal: React.FunctionComponent<Props> = ({
   strategy,
   onClose,
   onStartStrategy,
+  onTakeOut,
 }) => {
   const infoBlock = useCallback(() => {
     switch (strategy._type) {
@@ -53,8 +55,8 @@ const CalculatorModal: React.FunctionComponent<Props> = ({
       <Formik
         initialValues={{
           amount: "",
-          strategyId: strategy.id,
           days: 1,
+          strategyId: strategy.id,
         }}
         validationSchema={calculateSchema}
         onSubmit={onSubmit}
@@ -124,19 +126,24 @@ const CalculatorModal: React.FunctionComponent<Props> = ({
                   onDaysChange={handleChange("days")}
                 />
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: 26,
-                }}
-              >
-                {strategy.status == "active" && walletAPI.isSignedIn() && (
-                  <StartButton onClick={() => handleSubmit()}>
-                    Start
-                  </StartButton>
-                )}
-              </div>
+              {walletAPI.isSignedIn() && (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: 26,
+                  }}
+                >
+                  {strategy.status == "active" && (
+                    <StartButton onClick={() => handleSubmit()}>
+                      Start
+                    </StartButton>
+                  )}
+                  {/*{strategy.status == "in-progress" && (*/}
+                  <TakeOutButton onClick={onTakeOut}>Take Out</TakeOutButton>
+                  {/*)}*/}
+                </div>
+              )}
             </Form>
           </div>
         )}
@@ -157,6 +164,21 @@ const BlockDivider: React.FunctionComponent = () => (
 
 const StartButton = styled(Button)({
   backgroundColor: "#0097A7",
+  borderRadius: 20,
+  color: "#FFFFFF",
+  fontSize: "12px",
+  fontStyle: "normal",
+  fontWeight: "bold",
+  height: 33,
+  lineHeight: "26px",
+  marginRight: "8px",
+  padding: "6px",
+  textTransform: "none",
+  width: 110,
+});
+
+const TakeOutButton = styled(Button)({
+  backgroundColor: "red",
   borderRadius: 20,
   color: "#FFFFFF",
   fontSize: "12px",
