@@ -104,7 +104,7 @@ const DepositModal: React.FunctionComponent<Props> = ({
                   disabled={
                     errors.amount !== undefined && values.amount.length === 0
                   }
-                  onClick={handleSubmit}
+                  onClick={() => handleSubmit()}
                 >
                   Deposit
                 </DepositButton>

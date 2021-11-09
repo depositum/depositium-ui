@@ -42,8 +42,8 @@ const CalculatorModal: React.FunctionComponent<Props> = ({
   }, [strategy]);
 
   const onSubmit = useCallback(
-    ({ amount }) => {
-      onStartStrategy(amount, String(strategy.id));
+    ({ amount, strategyId }) => {
+      onStartStrategy(amount, String(strategyId));
     },
     [onStartStrategy],
   );
@@ -53,6 +53,7 @@ const CalculatorModal: React.FunctionComponent<Props> = ({
       <Formik
         initialValues={{
           amount: "",
+          strategyId: strategy.id,
           days: 1,
         }}
         validationSchema={calculateSchema}
@@ -131,7 +132,9 @@ const CalculatorModal: React.FunctionComponent<Props> = ({
                 }}
               >
                 {strategy.status == "active" && walletAPI.isSignedIn() && (
-                  <StartButton onClick={handleSubmit}>Start</StartButton>
+                  <StartButton onClick={() => handleSubmit()}>
+                    Start
+                  </StartButton>
                 )}
               </div>
             </Form>
