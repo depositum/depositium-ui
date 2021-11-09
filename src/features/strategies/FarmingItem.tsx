@@ -41,10 +41,10 @@ const FarmingItem: React.FunctionComponent<Props> = ({ farm }) => {
         borderRadius: "10px",
         borderWidth: "1px",
         boxShadow: "0px 4px 20px rgba(103, 103, 103, 0.25)",
-        mb: "26px",
+        mt: 3,
         overflow: "hidden",
         position: "relative",
-        width: "100%",
+        width: 400,
       }}
     >
       <Box

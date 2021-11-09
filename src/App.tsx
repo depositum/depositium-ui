@@ -36,52 +36,73 @@ const App = (): JSX.Element => (
           "page page"`,
           gridTemplateRows: "1fr 6fr",
           height: "100%",
+          justifyContent: "center",
+          overflow: "hidden",
           pb: 10,
-          px: 10,
+          px: 5,
           width: "100%",
         }}
       >
-        <Box sx={{ gridArea: "header" }}>
+        <Box sx={{ gridArea: "header", maxWidth: 1380 }}>
           <Header />
         </Box>
-        {walletAPI.isSignedIn() ? (
-          <AuthorizedContent />
-        ) : (
-          <NotAuthorizedContent />
-        )}
+        <Box
+          sx={{
+            borderRadius: "10px",
+            display: "flex",
+            gridArea: "page",
+            height: "100%",
+            justifyContent: "center",
+            overflow: "hidden",
+            width: "100%",
+          }}
+        >
+          {walletAPI.isSignedIn() ? (
+            <AuthorizedContent />
+          ) : (
+            <NotAuthorizedContent />
+          )}
+        </Box>
       </Box>
     </div>
   </ThemeProvider>
 );
 
 const AuthorizedContent: React.FunctionComponent = () => (
-  <Box
-    sx={{
-      borderRadius: "10px",
-      display: "grid",
-      gridArea: "page",
-      gridTemplateAreas: `"balance strategies"`,
-      gridTemplateColumns: "3fr 8fr",
-      height: "100%",
-      overflow: "hidden",
-      width: "100%",
-    }}
-  >
-    <Box sx={{ gridArea: "balance" }}>
+  <>
+    <Box
+      sx={{
+        backgroundColor: "#0097A7",
+        borderBottomLeftRadius: "10px",
+        borderTopLeftRadius: "10px",
+        height: "auto",
+        maxHeight: "100%",
+        maxWidth: 420,
+        minWidth: 360,
+        overflow: "hidden",
+        px: 5,
+        py: 8,
+      }}
+    >
       <Balance />
     </Box>
     <Box
       sx={{
         backgroundColor: "#F8F8F8",
-        gridArea: "strategies",
+        borderBottomRightRadius: "10px",
+        borderTopRightRadius: "10px",
         height: "auto",
         maxHeight: "100%",
+        maxWidth: 960,
+        minWidth: 520,
         overflowY: "auto",
+        px: 5,
+        py: 4,
       }}
     >
       <StrategiesList />
     </Box>
-  </Box>
+  </>
 );
 
 const NotAuthorizedContent: React.FunctionComponent = () => (
@@ -90,11 +111,13 @@ const NotAuthorizedContent: React.FunctionComponent = () => (
       backgroundColor: "#F8F8F8",
       borderRadius: "10px",
       gridArea: "page",
-      height: "100%",
-      minHeight: "100%",
-      overflow: "hidden",
+      height: "auto",
+      maxHeight: "100%",
+      maxWidth: 960,
+      minWidth: 520,
       overflowY: "auto",
-      width: "100%",
+      px: 5,
+      py: 4,
     }}
   >
     <StrategiesList />

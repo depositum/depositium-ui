@@ -40,9 +40,10 @@ const StakingItem: React.FunctionComponent<Props> = ({ stake }) => {
         borderRadius: "10px",
         borderWidth: "1px",
         boxShadow: "0px 4px 20px rgba(103, 103, 103, 0.25)",
-        mb: "26px",
+        mt: 3,
         overflow: "hidden",
-        width: "100%",
+        position: "relative",
+        width: 400,
       }}
     >
       <Box
