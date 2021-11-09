@@ -25,7 +25,7 @@ const CalculatorStakeInfo: React.FunctionComponent<Props> = ({
         display: "flex",
         justifyContent: "space-between",
         marginRight: 20,
-        width: 180,
+        minWidth: 180,
       }}
     >
       <div
@@ -34,6 +34,7 @@ const CalculatorStakeInfo: React.FunctionComponent<Props> = ({
           fontStyle: "normal",
           fontWeight: 500,
           lineHeight: "26px",
+          paddingRight: "8px",
         }}
       >
         {`${token}`}
