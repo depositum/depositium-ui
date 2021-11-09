@@ -10,12 +10,16 @@ import Logout from "@mui/icons-material/Logout";
 import { useCallback, useState } from "react";
 import walletAPI from "../api/WalletAPI";
 import BottomArrowIcon from "../icons/BottomArrowIcon";
-import { ArrowCircleDown } from "@mui/icons-material";
+import { ArrowCircleDown, ArrowCircleUp } from "@mui/icons-material";
 import { wrapNear } from "../api/NearAPI";
 import DepositModal from "../modals/DepositModal/DepositModal";
 import { Button, Modal, styled } from "@mui/material";
+import WithdrawModal from "../modals/WithdrawModal/WithdrawModal";
+import useNearBalance from "../hooks/useNearBalance";
 
 const ProfileItem: React.FunctionComponent = () => {
+  const { balance } = useNearBalance();
+
   // Deposit modal visibility and control
   const [depositModalVisible, setDepositModalVisible] = useState(false);
 
@@ -28,6 +32,21 @@ const ProfileItem: React.FunctionComponent = () => {
   }, []);
 
   const onDeposit = useCallback(async (amount: string) => {
+    await wrapNear(amount);
+  }, []);
+
+  // Withdraw modal visibility and control
+  const [withdrawModalVisible, setWithdrawModalVisible] = useState(false);
+
+  const onOpenWithdrawModal = useCallback(() => {
+    setWithdrawModalVisible(true);
+  }, []);
+
+  const onCloseWithdrawModal = useCallback(() => {
+    setWithdrawModalVisible(false);
+  }, []);
+
+  const onWithdraw = useCallback(async (amount: string) => {
     await wrapNear(amount);
   }, []);
 
@@ -52,13 +71,32 @@ const ProfileItem: React.FunctionComponent = () => {
   return (
     <React.Fragment>
       <Box sx={{ alignItems: "center", display: "flex", textAlign: "center" }}>
-        <DepositButton
+        {balance !== "0" && (
+          <>
+            <TradelineButton
+              onClick={onOpenWithdrawModal}
+              variant="text"
+              startIcon={<ArrowCircleUp fontSize="small" />}
+            >
+              Withdraw
+            </TradelineButton>
+            <div
+              style={{
+                border: "1px solid #CADEEF",
+                height: 32,
+                marginLeft: 24,
+                marginRight: 20,
+              }}
+            />
+          </>
+        )}
+        <TradelineButton
           onClick={onOpenDepositModal}
           variant="text"
           startIcon={<ArrowCircleDown fontSize="small" />}
         >
           Deposit
-        </DepositButton>
+        </TradelineButton>
         <div
           style={{
             border: "1px solid #CADEEF",
@@ -138,11 +176,19 @@ const ProfileItem: React.FunctionComponent = () => {
       >
         <DepositModal onDeposit={onDeposit} onClose={onCloseDepositModal} />
       </Modal>
+      <Modal
+        open={withdrawModalVisible}
+        onClose={onCloseWithdrawModal}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <WithdrawModal onDeposit={onWithdraw} onClose={onCloseWithdrawModal} />
+      </Modal>
     </React.Fragment>
   );
 };
 
-const DepositButton = styled(Button)({
+const TradelineButton = styled(Button)({
   color: "#FFFFFF",
   fontSize: 14,
   fontStyle: "normal",
