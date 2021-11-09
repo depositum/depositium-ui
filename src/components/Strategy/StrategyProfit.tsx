@@ -1,7 +1,7 @@
 import React, { ReactChild, useMemo } from "react";
-import { store } from "../../store";
 import { ArrowCircleDown, MonetizationOn } from "@mui/icons-material";
 import { Box } from "@mui/material";
+import useNearBalance from "../../hooks/useNearBalance";
 
 interface Props {
   depositAmount: number;
@@ -50,12 +50,14 @@ const InfoBlock: React.FunctionComponent<InfoBlockProps> = ({
   icon,
   amount,
 }) => {
+  const { balance } = useNearBalance();
+
   const amountFiat = useMemo(() => {
     if (Number(amount)) {
-      return (Number(amount) * store.getState().balance.rate).toFixed(2);
+      return (Number(amount) * Number(balance)).toFixed(2);
     }
     return 0;
-  }, [amount]);
+  }, [amount, balance]);
 
   return (
     <Box
