@@ -1,7 +1,5 @@
 import * as math from "mathjs";
 import { BigNumber } from "bignumber.js";
-import walletAPI from "../api/WalletAPI";
-import { getStrategyState } from "../contract/RefContractView";
 
 const LP_TOKEN_DECIMALS = 24;
 
@@ -76,7 +74,7 @@ export const getFarmInfo = async (
   const poolSts = Number(toReadableNumber(24, pool.shares_total_supply));
   const userStaked = toReadableNumber(LP_TOKEN_DECIMALS, staked ?? "0");
   const fakeTokenPriceList = {
-    "usdc-aromankov.testnet": { price: 1, decimals: 18 },
+    "usdc-aromankov.testnet": { decimals: 18, price: 1 },
   };
   const rewardToken = fakeTokenPriceList[farm.reward_token];
   const rewardTokenPrice = rewardToken ? rewardToken.price || 0 : 0;
@@ -135,17 +133,6 @@ export const getFarmInfo = async (
   }
 
   if (farm.farm_status === "Created") farm.farm_status = "Pending";
-
-  try {
-    const strategyState = walletAPI.isSignedIn()
-      ? await getStrategyState({ farmId: farm.farm_id })
-      : 0;
-    if (strategyState > 0) {
-      farm.farm_status = "InProgress";
-    }
-  } catch (e) {
-    console.log(e);
-  }
 
   return {
     ...farm,

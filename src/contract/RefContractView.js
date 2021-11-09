@@ -77,5 +77,14 @@ export const getStrategyState = async ({
       args: { account_id: accountId, farm_id: farmId },
       methodName: "get_user_rps",
     },
-    config.financeContractId,
+    config.farmingContractId,
   );
+
+export const getUnclaimedReward = async ({
+  farmId,
+  accountId = walletAPI.getAccountId(),
+}) =>
+  await view({
+    args: { account_id: accountId, farm_id: farmId },
+    methodName: "get_unclaimed_reward",
+  });

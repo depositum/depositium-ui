@@ -35,7 +35,7 @@ export default function useFarmsList(): Options {
     const activeFarms = config.activeFarms;
 
     let status: FarmStatus;
-    if (rawFarm.farm_status === "InProgress") {
+    if (rawFarm.strategyInProgress) {
       status = "in-progress";
     } else if (activeFarms.includes(rawFarm.farm_id)) {
       status = "active";
@@ -58,7 +58,7 @@ export default function useFarmsList(): Options {
           .replace("wrap_", "")
           .toUpperCase(),
       },
-      profitAmount: 3,
+      profitAmount: rawFarm.unclaimedReward,
       provider: "REF Farming",
       status: status,
     };

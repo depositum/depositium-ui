@@ -5,6 +5,8 @@ import {
   getRewardsByAccountId,
   getSeeds,
   getStakedListByAccountId,
+  getStrategyState,
+  getUnclaimedReward,
 } from "../contract/RefContractView";
 import walletAPI from "./WalletAPI";
 import config from "../config";
@@ -85,17 +87,39 @@ export const fetchFarmList = async () => {
 
   let farmsInfo = [];
   for (const farm of filteredFarms) {
-    farmsInfo.push(
-      await getFarmInfo(
-        farm,
-        poolList[farm.farm_id],
-        stakedList[farm.seed_id],
-        tokenPriceList,
-        rewardList[farm.reward_token],
-        seeds[farm.seed_id],
-        getLPTokenId(farm.farm_id),
-      ),
+    const farmInfo = await getFarmInfo(
+      farm,
+      poolList[farm.farm_id],
+      stakedList[farm.seed_id],
+      tokenPriceList,
+      rewardList[farm.reward_token],
+      seeds[farm.seed_id],
+      getLPTokenId(farm.farm_id),
     );
+
+    const rawUnclaimedReward = await getUnclaimedReward({
+      accountId: subAccId,
+      farmId: farm.farm_id,
+    });
+    const unclaimedReward =
+      rawUnclaimedReward !== "0"
+        ? new BigNumber(rawUnclaimedReward)
+            .dividedBy(new BigNumber(10).pow(18))
+            .toNumber()
+        : 0;
+
+    const strategyInProgress = walletAPI.isSignedIn()
+      ? (await getStrategyState({
+          accountId: subAccId,
+          farmId: farm.farm_id,
+        })) > 0
+      : false;
+
+    farmsInfo.push({
+      ...farmInfo,
+      strategyInProgress,
+      unclaimedReward,
+    });
   }
   return farmsInfo;
 };
