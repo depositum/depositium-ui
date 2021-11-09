@@ -121,8 +121,13 @@ export const getFarmInfo = async (
           new BigNumber(rewardsPerWeek).multipliedBy(rewardTokenPrice)
         )
         .multipliedBy(52)
-        .multipliedBy(100)
-        .toFixed(2)
+        .multipliedBy(100);
+        
+  if (apr.gt(100)) {
+    apr = apr.toFixed(0);
+  } else {
+    apr = apr.toFixed(2);
+  }
  
   if (farm.farm_status === "Created") farm.farm_status = "Pending";
 

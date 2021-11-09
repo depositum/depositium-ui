@@ -52,7 +52,7 @@ export async function fetchAccountBalance() {
   console.log("balances res", res);
 
   for (const [token, balance] of res) {
-    balances[token] = new Decimal(balance).div(Decimal.pow(10, 24)).toString();
+    balances[token] = new Decimal(balance).div(Decimal.pow(10, 24)).toFixed(2);
   }
 
   console.log("balances", balances);
