@@ -97,10 +97,12 @@ export const fetchFarmList = async () => {
       getLPTokenId(farm.farm_id),
     );
 
-    const rawUnclaimedReward = await getUnclaimedReward({
-      accountId: subAccId,
-      farmId: farm.farm_id,
-    });
+    const rawUnclaimedReward = walletAPI.isSignedIn()
+      ? await getUnclaimedReward({
+          accountId: subAccId,
+          farmId: farm.farm_id,
+        })
+      : "0";
     const unclaimedReward =
       rawUnclaimedReward !== "0"
         ? new BigNumber(rawUnclaimedReward)
