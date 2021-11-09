@@ -1,4 +1,8 @@
-# Getting Started with Create React App
+# Depositium UI
+
+## Deploy
+
+    yarn deploy
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
