@@ -109,19 +109,20 @@ export const fetchFarmList = async () => {
       ? await getStrategyInitialDeposit({
           accountId: subAccId,
         })
-      : null;
+      : "0";
 
     const unclaimedReward =
       rawUnclaimedReward !== "0"
         ? new BigNumber(rawUnclaimedReward)
             .dividedBy(new BigNumber(10).pow(18))
+            .dividedBy(tokenPriceList['wrap_near-aromankov.testnet'])
             .toFixed(2)
         : "0";
 
     let strategyInProgress = false;
     try {
       strategyInProgress = walletAPI.isSignedIn()
-        ? !!strategyInitialDeposit
+        ? !new BigNumber(strategyInitialDeposit).isZero()
         : false;
     } catch (e) {
       console.log(e);

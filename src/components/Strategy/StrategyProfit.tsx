@@ -1,6 +1,6 @@
 import React, { ReactChild, useMemo } from "react";
 import { ArrowCircleDown, MonetizationOn } from "@mui/icons-material";
-import { Box } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import useNearBalance from "../../hooks/useNearBalance";
 import BigNumber from "bignumber.js";
 
@@ -30,14 +30,23 @@ const StrategyProfit: React.FunctionComponent<Props> = ({
         mt: "12px",
       }}
     >
-      <InfoBlock
-        icon={<ArrowCircleDown fontSize="large" />}
-        amount={depositAmount}
-      />
-      <InfoBlock
-        icon={<MonetizationOn fontSize="large" />}
-        amount={profitAmount}
-      />
+      <Tooltip disableFocusListener title="Deposited" placement="bottom">
+        <div>
+          <InfoBlock
+            icon={<ArrowCircleDown fontSize="large" />}
+            amount={depositAmount}
+          />
+        </div>
+      </Tooltip>
+
+      <Tooltip title="Profit" placement="bottom">
+        <div>
+          <InfoBlock
+            icon={<MonetizationOn fontSize="large" />}
+            amount={profitAmount}
+          />
+        </div>
+      </Tooltip>
     </Box>
   </>
 );
@@ -57,7 +66,7 @@ const InfoBlock: React.FunctionComponent<InfoBlockProps> = ({
     if (new BigNumber(amount).gt(0)) {
       return new BigNumber(amount).multipliedBy(balance).toFixed(2);
     }
-    return '0';
+    return "0";
   }, [amount, balance]);
 
   return (
