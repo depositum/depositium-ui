@@ -60,14 +60,14 @@ const InfoBlock: React.FunctionComponent<InfoBlockProps> = ({
   icon,
   amount,
 }) => {
-  const { balance } = useNearBalance();
+  const { rate } = useNearBalance();
 
   const amountFiat = useMemo(() => {
     if (new BigNumber(amount).gt(0)) {
-      return new BigNumber(amount).multipliedBy(balance).toFixed(2);
+      return new BigNumber(amount).multipliedBy(rate).toFixed(2);
     }
     return "0";
-  }, [amount, balance]);
+  }, [amount, rate]);
 
   return (
     <Box
