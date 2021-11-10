@@ -7,6 +7,7 @@ import {
   getStakedListByAccountId,
   getStrategyState,
   getUnclaimedReward,
+  getStrategyInitialDeposit,
 } from "../contract/RefContractView";
 import walletAPI from "./WalletAPI";
 import config from "../config";
@@ -103,20 +104,24 @@ export const fetchFarmList = async () => {
           farmId: farm.farm_id,
         })
       : "0";
+
+    const strategyInitialDeposit = walletAPI.isSignedIn()
+      ? await getStrategyInitialDeposit({
+          accountId: subAccId,
+        })
+      : null;
+
     const unclaimedReward =
       rawUnclaimedReward !== "0"
         ? new BigNumber(rawUnclaimedReward)
             .dividedBy(new BigNumber(10).pow(18))
-            .toNumber()
-        : 0;
+            .toFixed(2)
+        : "0";
 
     let strategyInProgress = false;
     try {
       strategyInProgress = walletAPI.isSignedIn()
-        ? (await getStrategyState({
-            accountId: subAccId,
-            farmId: farm.farm_id,
-          })) > 0
+        ? !!strategyInitialDeposit
         : false;
     } catch (e) {
       console.log(e);
@@ -126,6 +131,9 @@ export const fetchFarmList = async () => {
       ...farmInfo,
       strategyInProgress,
       unclaimedReward,
+      strategyInitialDeposit: new BigNumber(strategyInitialDeposit || "0")
+        .dividedBy(new BigNumber(10).pow(24))
+        .toFixed(2),
     });
   }
   return farmsInfo;

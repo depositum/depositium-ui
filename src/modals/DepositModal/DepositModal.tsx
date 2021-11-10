@@ -9,7 +9,7 @@ const depositSchema = Yup.object().shape({
   amount: Yup.number()
     .typeError("Invalid amount!")
     .min(10, "Min amount is 10!")
-    .max(10000, "Max amount is 10000!"),
+    .max(100, "Max amount is 100!"),
 });
 
 interface Props {

@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { Box, Card } from "@mui/material";
-import { startStrategy } from "../strategyItem/strategyItemSlice";
+import { startStrategy, stopStrategy } from "../strategyItem/strategyItemSlice";
 import { IStake } from "../../hooks/useStakesList";
 import { TokenIcon } from "../../components/TokenIcon";
 import StrategyTitle from "../../components/Strategy/StrategyTitle";
@@ -28,6 +28,13 @@ const StakingItem: React.FunctionComponent<Props> = ({ stake }) => {
   const onStartStrategy = useCallback(
     (amount: string, strategyId: string) => {
       dispatch(startStrategy({ amount: amount, strategyId: strategyId }));
+    },
+    [dispatch],
+  );
+
+  const onStopStrategy = useCallback(
+    (strategyId: string) => {
+      dispatch(startStrategy({ strategyId: strategyId }));
     },
     [dispatch],
   );
@@ -59,7 +66,7 @@ const StakingItem: React.FunctionComponent<Props> = ({ stake }) => {
           pt: "12px",
         }}
       >
-        <StrategyTitle strategy={stake} onStartStrategy={onStartStrategy} />
+        <StrategyTitle strategy={stake} onStartStrategy={onStartStrategy} onStopStrategy={onStopStrategy} />
         <div
           style={{
             alignItems: "center",

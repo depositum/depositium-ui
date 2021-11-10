@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { Box, Card } from "@mui/material";
 import { IFarm } from "../../hooks/useFarmsList";
-import { startStrategy } from "../strategyItem/strategyItemSlice";
+import { startStrategy, stopStrategy } from "../strategyItem/strategyItemSlice";
 import { TokenIcon } from "../../components/TokenIcon";
 import StrategyTitle from "../../components/Strategy/StrategyTitle";
 import StrategyProfit from "../../components/Strategy/StrategyProfit";
@@ -29,6 +29,14 @@ const FarmingItem: React.FunctionComponent<Props> = ({ farm }) => {
     (amount: string, strategyId: string) => {
       console.log(`onStartStrategy ${amount} - ${strategyId}`);
       dispatch(startStrategy({ amount, strategyId: strategyId }));
+    },
+    [dispatch],
+  );
+
+  const onStopStrategy = useCallback(
+    (strategyId: string) => {
+      console.log(`onStopStrategy ${strategyId}`);
+      dispatch(stopStrategy({ strategyId: strategyId }));
     },
     [dispatch],
   );
@@ -87,7 +95,7 @@ const FarmingItem: React.FunctionComponent<Props> = ({ farm }) => {
           pt: "12px",
         }}
       >
-        <StrategyTitle strategy={farm} onStartStrategy={onStartStrategy} />
+        <StrategyTitle strategy={farm} onStartStrategy={onStartStrategy} onStopStrategy={onStopStrategy} />
         <div
           style={{
             alignItems: "center",

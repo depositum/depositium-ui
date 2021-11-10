@@ -14,8 +14,8 @@ import walletAPI from "../../api/WalletAPI";
 const calculateSchema = Yup.object().shape({
   amount: Yup.number()
     .typeError("Invalid amount!")
-    .min(0.01, "Too Short!")
-    .max(10000, "Too Long!"),
+    .min(0.01, "Min amount 0.01 NEAR")
+    .max(10, "Max amount 10 NEAR"),
   days: Yup.number().min(1, "Too Short!").max(90, "Too Long!"),
 });
 
@@ -23,7 +23,7 @@ interface Props {
   strategy: IFarm | IStake;
   onClose: () => void;
   onStartStrategy: (amount: string, strategyId: string) => void;
-  onTakeOut: () => void;
+  onTakeOut: (strategyId: string) => void;
 }
 
 const CalculatorModal: React.FunctionComponent<Props> = ({
@@ -141,7 +141,7 @@ const CalculatorModal: React.FunctionComponent<Props> = ({
                     </StartButton>
                   )}
                   {strategy.status == "in-progress" && (
-                    <TakeOutButton onClick={onTakeOut}>Take Out</TakeOutButton>
+                    <TakeOutButton onClick={() => onTakeOut(String(strategy.id))}>Take Out</TakeOutButton>
                   )}
                 </div>
               )}

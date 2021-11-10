@@ -88,3 +88,12 @@ export const getUnclaimedReward = async ({
     args: { account_id: accountId, farm_id: farmId },
     methodName: "get_unclaimed_reward",
   });
+
+
+  export const getStrategyInitialDeposit = async ({
+    accountId = walletAPI.getAccountId(),
+  }) =>
+    await view({
+      args: { sub_account_id: accountId },
+      methodName: "get_strategy_deposit",
+    }, config.depositiumContractId);

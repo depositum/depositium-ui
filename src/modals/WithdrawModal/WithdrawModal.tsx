@@ -16,18 +16,18 @@ const withdrawSchema = (balance: number) =>
 
 interface Props {
   onClose: () => void;
-  onDeposit: (amount: string) => void;
+  onWithdraw: (amount: string) => void;
 }
 
 const WithdrawModal: React.FunctionComponent<Props> = ({
   onClose,
-  onDeposit,
+  onWithdraw,
 }) => {
   const onSubmit = useCallback(
     ({ amount }) => {
-      onDeposit(amount);
+      onWithdraw(amount);
     },
-    [onDeposit],
+    [onWithdraw],
   );
 
   return (

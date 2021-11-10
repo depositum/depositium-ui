@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Decimal from "decimal.js";
-import { startStrategy as startStrategyApiCall } from "../../api/NearAPI";
+import { 
+  startStrategy as startStrategyApiCall,
+  stopStrategy as stopStrategyApiCall
+ } from "../../api/NearAPI";
 
 const initialState = {
   f_ref_near: {
@@ -70,10 +73,19 @@ export const strategyItemSlice = createSlice({
         })
         .catch(err => console.log("startStrategy err", err));
     },
+    stopStrategy: (state, action) => {
+      const { strategyId } = action.payload;
+      console.log("stop strategy", strategyId);
+      stopStrategyApiCall(strategyId)
+        .then(res => {
+          console.log("stop strategy res:", res);
+        })
+        .catch(err => console.log("stopStrategy err", err));
+    },
   },
 });
 
-export const { changeDepositAmount, changeDays, startStrategy } =
+export const { changeDepositAmount, changeDays, startStrategy, stopStrategy } =
   strategyItemSlice.actions;
 
 export const selectStrategyItem = (state, strategyId) =>

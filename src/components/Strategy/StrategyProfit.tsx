@@ -2,10 +2,11 @@ import React, { ReactChild, useMemo } from "react";
 import { ArrowCircleDown, MonetizationOn } from "@mui/icons-material";
 import { Box } from "@mui/material";
 import useNearBalance from "../../hooks/useNearBalance";
+import BigNumber from "bignumber.js";
 
 interface Props {
-  depositAmount: number;
-  profitAmount: number;
+  depositAmount: string;
+  profitAmount: string;
 }
 
 const StrategyProfit: React.FunctionComponent<Props> = ({
@@ -43,7 +44,7 @@ const StrategyProfit: React.FunctionComponent<Props> = ({
 
 interface InfoBlockProps {
   icon: ReactChild;
-  amount: number;
+  amount: string;
 }
 
 const InfoBlock: React.FunctionComponent<InfoBlockProps> = ({
@@ -53,10 +54,10 @@ const InfoBlock: React.FunctionComponent<InfoBlockProps> = ({
   const { balance } = useNearBalance();
 
   const amountFiat = useMemo(() => {
-    if (Number(amount)) {
-      return (Number(amount) * Number(balance)).toFixed(2);
+    if (new BigNumber(amount).gt(0)) {
+      return new BigNumber(amount).multipliedBy(balance).toFixed(2);
     }
-    return 0;
+    return '0';
   }, [amount, balance]);
 
   return (
@@ -78,7 +79,7 @@ const InfoBlock: React.FunctionComponent<InfoBlockProps> = ({
             textTransform: "uppercase",
           }}
         >
-          {`${amount.toFixed(2)} NEAR`}
+          {`${amount} NEAR`}
         </div>
         <div
           style={{

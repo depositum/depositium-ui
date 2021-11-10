@@ -21,8 +21,8 @@ export interface IFarm {
   id: number;
   apr: string;
   pair: { first: TokenName; second: TokenName };
-  depositAmount: number;
-  profitAmount: number;
+  depositAmount: string;
+  profitAmount: string;
   status: FarmStatus;
 }
 
@@ -49,7 +49,7 @@ export default function useFarmsList(): Options {
     return {
       _type: "farm",
       apr: rawFarm.apr,
-      depositAmount: 15,
+      depositAmount: rawFarm.strategyInitialDeposit || '0',
       id: rawFarm.farm_id,
       pair: {
         first: rawFarm.pool.token_symbols[0]

@@ -11,7 +11,7 @@ import { useCallback, useState } from "react";
 import walletAPI from "../api/WalletAPI";
 import BottomArrowIcon from "../icons/BottomArrowIcon";
 import { ArrowCircleDown, ArrowCircleUp } from "@mui/icons-material";
-import { wrapNear } from "../api/NearAPI";
+import { wrapNear, withdraw } from "../api/NearAPI";
 import DepositModal from "../modals/DepositModal/DepositModal";
 import { Button, Modal, styled } from "@mui/material";
 import WithdrawModal from "../modals/WithdrawModal/WithdrawModal";
@@ -47,7 +47,7 @@ const ProfileItem: React.FunctionComponent = () => {
   }, []);
 
   const onWithdraw = useCallback(async (amount: string) => {
-    await wrapNear(amount);
+    await withdraw(amount);
   }, []);
 
   // Profile opened control
@@ -71,6 +71,23 @@ const ProfileItem: React.FunctionComponent = () => {
   return (
     <React.Fragment>
       <Box sx={{ alignItems: "center", display: "flex", textAlign: "center" }}>
+        <TradelineButton
+          onClick={onOpenDepositModal}
+          variant="text"
+          startIcon={<ArrowCircleDown fontSize="small" />}
+        >
+          Deposit
+        </TradelineButton>
+
+        <div
+          style={{
+            border: "1px solid #CADEEF",
+            height: 32,
+            marginLeft: 24,
+            marginRight: 20,
+          }}
+        />
+
         {balance !== "0" && (
           <>
             <TradelineButton
@@ -90,21 +107,7 @@ const ProfileItem: React.FunctionComponent = () => {
             />
           </>
         )}
-        <TradelineButton
-          onClick={onOpenDepositModal}
-          variant="text"
-          startIcon={<ArrowCircleDown fontSize="small" />}
-        >
-          Deposit
-        </TradelineButton>
-        <div
-          style={{
-            border: "1px solid #CADEEF",
-            height: 32,
-            marginLeft: 24,
-            marginRight: 20,
-          }}
-        />
+
         <div
           style={{
             color: "#FFFFFF",
@@ -182,7 +185,7 @@ const ProfileItem: React.FunctionComponent = () => {
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <WithdrawModal onDeposit={onWithdraw} onClose={onCloseWithdrawModal} />
+        <WithdrawModal onWithdraw={onWithdraw} onClose={onCloseWithdrawModal} />
       </Modal>
     </React.Fragment>
   );

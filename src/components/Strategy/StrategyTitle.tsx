@@ -8,11 +8,13 @@ import { IStake } from "../../hooks/useStakesList";
 interface Props {
   strategy: IFarm | IStake;
   onStartStrategy: (amount: string, strategyId: string) => void;
+  onStopStrategy: (strategyId: string) => void;
 }
 
 const StrategyTitle: React.FunctionComponent<Props> = ({
   strategy,
   onStartStrategy,
+  onStopStrategy,
 }) => {
   // Calculator control
   const [calculatorVisible, setCalculatorVisible] = useState(false);
@@ -51,7 +53,7 @@ const StrategyTitle: React.FunctionComponent<Props> = ({
           variant="text"
           startIcon={<CalculatorIcon />}
         >
-          Calculate
+          Estimate
         </CalculateButton>
       </div>
       <div
@@ -71,7 +73,7 @@ const StrategyTitle: React.FunctionComponent<Props> = ({
           strategy={strategy}
           onClose={onCloseCalculator}
           onStartStrategy={onStartStrategy}
-          onTakeOut={onCloseCalculator}
+          onTakeOut={onStopStrategy}
         />
       </Modal>
     </>
