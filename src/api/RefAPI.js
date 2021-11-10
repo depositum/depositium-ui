@@ -108,7 +108,7 @@ export const fetchFarmList = async () => {
       ? await getStrategyInitialDeposit({
           accountId: subAccId,
         })
-      : "0";
+      : null;
 
     const unclaimedReward =
       rawUnclaimedReward !== "0"
@@ -121,7 +121,7 @@ export const fetchFarmList = async () => {
     let strategyInProgress = false;
     try {
       strategyInProgress = walletAPI.isSignedIn()
-        ? !new BigNumber(strategyInitialDeposit).isZero()
+        ? !new BigNumber(strategyInitialDeposit || "0").isZero()
         : false;
     } catch (e) {
       console.log(e);
