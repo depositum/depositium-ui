@@ -5,7 +5,6 @@ import {
   getRewardsByAccountId,
   getSeeds,
   getStakedListByAccountId,
-  getStrategyState,
   getUnclaimedReward,
   getStrategyInitialDeposit,
 } from "../contract/RefContractView";
@@ -131,10 +130,10 @@ export const fetchFarmList = async () => {
     farmsInfo.push({
       ...farmInfo,
       strategyInProgress,
-      unclaimedReward,
       strategyInitialDeposit: new BigNumber(strategyInitialDeposit || "0")
         .dividedBy(new BigNumber(10).pow(24))
         .toFixed(2),
+      unclaimedReward,
     });
   }
   return farmsInfo;

@@ -10,6 +10,7 @@ import { IStake } from "../../hooks/useStakesList";
 import CalculatorFarmInfo from "./CalculatorFarmInfo";
 import CalculatorStakeInfo from "./CalculatorStakeInfo";
 import walletAPI from "../../api/WalletAPI";
+import { store } from "../../store";
 
 const calculateSchema = Yup.object().shape({
   amount: Yup.number()
@@ -23,14 +24,12 @@ interface Props {
   strategy: IFarm | IStake;
   onClose: () => void;
   onStartStrategy: (amount: string, strategyId: string) => void;
-  onTakeOut: (strategyId: string) => void;
 }
 
 const CalculatorModal: React.FunctionComponent<Props> = ({
   strategy,
   onClose,
   onStartStrategy,
-  onTakeOut,
 }) => {
   const infoBlock = useCallback(() => {
     switch (strategy._type) {
@@ -135,14 +134,12 @@ const CalculatorModal: React.FunctionComponent<Props> = ({
                     marginTop: 26,
                   }}
                 >
-                  {strategy.status == "active" && (
-                    <StartButton onClick={() => handleSubmit()}>
-                      Start
-                    </StartButton>
-                  )}
-                  {strategy.status == "in-progress" && (
-                    <TakeOutButton onClick={() => onTakeOut(String(strategy.id))}>Take Out</TakeOutButton>
-                  )}
+                  {strategy.status == "active" &&
+                    store.getState().balance.balance > 0 && (
+                      <StartButton onClick={() => handleSubmit()}>
+                        Start
+                      </StartButton>
+                    )}
                 </div>
               )}
             </Form>
@@ -165,21 +162,6 @@ const BlockDivider: React.FunctionComponent = () => (
 
 const StartButton = styled(Button)({
   backgroundColor: "#0097A7",
-  borderRadius: 20,
-  color: "#FFFFFF",
-  fontSize: "12px",
-  fontStyle: "normal",
-  fontWeight: "bold",
-  height: 33,
-  lineHeight: "26px",
-  marginRight: "8px",
-  padding: "6px",
-  textTransform: "none",
-  width: 110,
-});
-
-const TakeOutButton = styled(Button)({
-  backgroundColor: "red",
   borderRadius: 20,
   color: "#FFFFFF",
   fontSize: "12px",

@@ -1,9 +1,10 @@
 import React, { useCallback, useState } from "react";
 import CalculatorIcon from "../../icons/CalculatorIcon";
-import { Button, Modal, styled } from "@mui/material";
+import { Box, Button, Modal, styled } from "@mui/material";
 import CalculatorModal from "../../modals/CalculatorModal/CalculatorModal";
 import { IFarm } from "../../hooks/useFarmsList";
 import { IStake } from "../../hooks/useStakesList";
+import { LocalAtm } from "@mui/icons-material";
 
 interface Props {
   strategy: IFarm | IStake;
@@ -27,6 +28,10 @@ const StrategyTitle: React.FunctionComponent<Props> = ({
     setCalculatorVisible(false);
   }, []);
 
+  const onFinish = useCallback(() => {
+    onStopStrategy(String(strategy.id));
+  }, [onStopStrategy, strategy.id]);
+
   return (
     <>
       <div
@@ -48,13 +53,23 @@ const StrategyTitle: React.FunctionComponent<Props> = ({
         >
           {strategy.provider}
         </div>
-        <CalculateButton
-          onClick={onOpenCalculator}
-          variant="text"
-          startIcon={<CalculatorIcon />}
-        >
-          Estimate
-        </CalculateButton>
+        <Box>
+          <CalculateButton
+            onClick={onOpenCalculator}
+            variant="text"
+            startIcon={<CalculatorIcon />}
+          >
+            Estimate
+          </CalculateButton>
+          {strategy.status == "in-progress" && (
+            <FinishButton
+              startIcon={<LocalAtm sx={{ height: "18px", width: "18px" }} />}
+              onClick={onFinish}
+            >
+              Finish
+            </FinishButton>
+          )}
+        </Box>
       </div>
       <div
         style={{
@@ -73,7 +88,6 @@ const StrategyTitle: React.FunctionComponent<Props> = ({
           strategy={strategy}
           onClose={onCloseCalculator}
           onStartStrategy={onStartStrategy}
-          onTakeOut={onStopStrategy}
         />
       </Modal>
     </>
@@ -86,6 +100,18 @@ const CalculateButton = styled(Button)({
   fontStyle: "normal",
   fontWeight: "bold",
   lineHeight: "26px",
+  marginRight: "8px",
+  padding: "6px",
+  textTransform: "none",
+});
+
+const FinishButton = styled(Button)({
+  color: "black",
+  fontSize: "12px",
+  fontStyle: "normal",
+  fontWeight: "bold",
+  lineHeight: "26px",
+  marginLeft: "4px",
   marginRight: "8px",
   padding: "6px",
   textTransform: "none",
