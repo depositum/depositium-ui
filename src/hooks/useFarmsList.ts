@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { fetchFarmList } from "../api/RefAPI";
 import config from "../config";
+import { fetchFiatRate } from "../api/NearAPI";
+import { store } from "../store";
+import { updateRate } from "../store/reducers/Balance/action";
 
 export type TokenName =
   | "REF"
@@ -18,8 +21,8 @@ export interface IFarm {
   id: number;
   apr: string;
   pair: { first: TokenName; second: TokenName };
-  depositAmount: number;
-  profitAmount: number;
+  depositAmount: string;
+  profitAmount: string;
   status: FarmStatus;
 }
 
@@ -35,7 +38,7 @@ export default function useFarmsList(): Options {
     const activeFarms = config.activeFarms;
 
     let status: FarmStatus;
-    if (rawFarm.farm_status === "InProgress") {
+    if (rawFarm.strategyInProgress) {
       status = "in-progress";
     } else if (activeFarms.includes(rawFarm.farm_id)) {
       status = "active";
@@ -46,7 +49,7 @@ export default function useFarmsList(): Options {
     return {
       _type: "farm",
       apr: rawFarm.apr,
-      depositAmount: 15,
+      depositAmount: rawFarm.strategyInitialDeposit || '0',
       id: rawFarm.farm_id,
       pair: {
         first: rawFarm.pool.token_symbols[0]
@@ -58,7 +61,7 @@ export default function useFarmsList(): Options {
           .replace("wrap_", "")
           .toUpperCase(),
       },
-      profitAmount: 3,
+      profitAmount: rawFarm.unclaimedReward,
       provider: "REF Farming",
       status: status,
     };
@@ -66,6 +69,11 @@ export default function useFarmsList(): Options {
 
   useEffect(() => {
     async function fetchData() {
+      // TODO: Workaround for not authorized users to fix calculating on the modals
+      const rate = await fetchFiatRate();
+      store.dispatch(updateRate(rate.near.usd));
+
+      // Fetch farms
       const response = await fetchFarmList();
       setFarms(sortByStatus(response.map(formatFarmData)));
     }

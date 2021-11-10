@@ -10,12 +10,13 @@ import { IStake } from "../../hooks/useStakesList";
 import CalculatorFarmInfo from "./CalculatorFarmInfo";
 import CalculatorStakeInfo from "./CalculatorStakeInfo";
 import walletAPI from "../../api/WalletAPI";
+import { store } from "../../store";
 
 const calculateSchema = Yup.object().shape({
   amount: Yup.number()
     .typeError("Invalid amount!")
-    .min(0.01, "Too Short!")
-    .max(10000, "Too Long!"),
+    .min(0.01, "Min amount 0.01 NEAR")
+    .max(10, "Max amount 10 NEAR"),
   days: Yup.number().min(1, "Too Short!").max(90, "Too Long!"),
 });
 
@@ -53,8 +54,8 @@ const CalculatorModal: React.FunctionComponent<Props> = ({
       <Formik
         initialValues={{
           amount: "",
-          strategyId: strategy.id,
           days: 1,
+          strategyId: strategy.id,
         }}
         validationSchema={calculateSchema}
         onSubmit={onSubmit}
@@ -121,22 +122,26 @@ const CalculatorModal: React.FunctionComponent<Props> = ({
                   days={values.days}
                   apr={Number(strategy.apr)}
                   amount={values.amount}
+                  amountErrorMessage={errors.amount}
                   onDaysChange={handleChange("days")}
                 />
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: 26,
-                }}
-              >
-                {strategy.status == "active" && walletAPI.isSignedIn() && (
-                  <StartButton onClick={() => handleSubmit()}>
-                    Start
-                  </StartButton>
-                )}
-              </div>
+              {walletAPI.isSignedIn() && (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: 26,
+                  }}
+                >
+                  {strategy.status == "active" &&
+                    store.getState().balance.balance > 0 && (
+                      <StartButton onClick={() => handleSubmit()}>
+                        Start
+                      </StartButton>
+                    )}
+                </div>
+              )}
             </Form>
           </div>
         )}

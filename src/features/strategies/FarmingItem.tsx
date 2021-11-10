@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { Box, Card } from "@mui/material";
 import { IFarm } from "../../hooks/useFarmsList";
-import { startStrategy } from "../strategyItem/strategyItemSlice";
+import { startStrategy, stopStrategy } from "../strategyItem/strategyItemSlice";
 import { TokenIcon } from "../../components/TokenIcon";
 import StrategyTitle from "../../components/Strategy/StrategyTitle";
 import StrategyProfit from "../../components/Strategy/StrategyProfit";
@@ -33,6 +33,14 @@ const FarmingItem: React.FunctionComponent<Props> = ({ farm }) => {
     [dispatch],
   );
 
+  const onStopStrategy = useCallback(
+    (strategyId: string) => {
+      console.log(`onStopStrategy ${strategyId}`);
+      dispatch(stopStrategy({ strategyId: strategyId }));
+    },
+    [dispatch],
+  );
+
   return (
     <Card
       sx={{
@@ -41,10 +49,10 @@ const FarmingItem: React.FunctionComponent<Props> = ({ farm }) => {
         borderRadius: "10px",
         borderWidth: "1px",
         boxShadow: "0px 4px 20px rgba(103, 103, 103, 0.25)",
-        mb: "26px",
+        mt: 3,
         overflow: "hidden",
         position: "relative",
-        width: "100%",
+        width: 400,
       }}
     >
       <Box
@@ -87,7 +95,7 @@ const FarmingItem: React.FunctionComponent<Props> = ({ farm }) => {
           pt: "12px",
         }}
       >
-        <StrategyTitle strategy={farm} onStartStrategy={onStartStrategy} />
+        <StrategyTitle strategy={farm} onStartStrategy={onStartStrategy} onStopStrategy={onStopStrategy} />
         <div
           style={{
             alignItems: "center",
@@ -154,10 +162,12 @@ const FarmingItem: React.FunctionComponent<Props> = ({ farm }) => {
             </div>
           </div>
         </div>
-        <StrategyProfit
-          depositAmount={farm.depositAmount}
-          profitAmount={farm.profitAmount}
-        />
+        {farm.status === "in-progress" && (
+          <StrategyProfit
+            depositAmount={farm.depositAmount}
+            profitAmount={farm.profitAmount}
+          />
+        )}
       </Box>
     </Card>
   );

@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { Box, Card } from "@mui/material";
-import { startStrategy } from "../strategyItem/strategyItemSlice";
+import { startStrategy, stopStrategy } from "../strategyItem/strategyItemSlice";
 import { IStake } from "../../hooks/useStakesList";
 import { TokenIcon } from "../../components/TokenIcon";
 import StrategyTitle from "../../components/Strategy/StrategyTitle";
@@ -32,6 +32,13 @@ const StakingItem: React.FunctionComponent<Props> = ({ stake }) => {
     [dispatch],
   );
 
+  const onStopStrategy = useCallback(
+    (strategyId: string) => {
+      dispatch(startStrategy({ strategyId: strategyId }));
+    },
+    [dispatch],
+  );
+
   return (
     <Card
       sx={{
@@ -40,9 +47,10 @@ const StakingItem: React.FunctionComponent<Props> = ({ stake }) => {
         borderRadius: "10px",
         borderWidth: "1px",
         boxShadow: "0px 4px 20px rgba(103, 103, 103, 0.25)",
-        mb: "26px",
+        mt: 3,
         overflow: "hidden",
-        width: "100%",
+        position: "relative",
+        width: 400,
       }}
     >
       <Box
@@ -58,7 +66,7 @@ const StakingItem: React.FunctionComponent<Props> = ({ stake }) => {
           pt: "12px",
         }}
       >
-        <StrategyTitle strategy={stake} onStartStrategy={onStartStrategy} />
+        <StrategyTitle strategy={stake} onStartStrategy={onStartStrategy} onStopStrategy={onStopStrategy} />
         <div
           style={{
             alignItems: "center",
@@ -116,10 +124,12 @@ const StakingItem: React.FunctionComponent<Props> = ({ stake }) => {
             </div>
           </div>
         </div>
-        <StrategyProfit
-          depositAmount={stake.depositAmount}
-          profitAmount={stake.profitAmount}
-        />
+        {stake.status === "in-progress" && (
+          <StrategyProfit
+            depositAmount={stake.depositAmount}
+            profitAmount={stake.profitAmount}
+          />
+        )}
       </Box>
     </Card>
   );

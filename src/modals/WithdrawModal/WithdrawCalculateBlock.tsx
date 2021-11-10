@@ -7,7 +7,7 @@ interface Props {
   errorMessage: string | undefined;
 }
 
-const CalculatorDepositBlock: React.FunctionComponent<Props> = ({
+const WithdrawCalculateBlock: React.FunctionComponent<Props> = ({
   amount,
   onAmountChange,
   errorMessage,
@@ -28,18 +28,6 @@ const CalculatorDepositBlock: React.FunctionComponent<Props> = ({
 
   return (
     <div>
-      <div
-        style={{
-          color: "#2D2D2D",
-          fontSize: 14,
-          fontStyle: "normal",
-          fontWeight: 500,
-          lineHeight: "26px",
-          opacity: 0.5,
-        }}
-      >
-        Deposit
-      </div>
       <div
         style={{
           alignItems: "center",
@@ -105,7 +93,7 @@ const CalculatorDepositBlock: React.FunctionComponent<Props> = ({
           </div>
         </div>
       </div>
-      {errorMessage && (
+      <div style={{ height: 12 }}>
         <div
           style={{
             color: "red",
@@ -118,9 +106,9 @@ const CalculatorDepositBlock: React.FunctionComponent<Props> = ({
         >
           {errorMessage}
         </div>
-      )}
+      </div>
     </div>
   );
 };
 
-export default React.memo(CalculatorDepositBlock);
+export default React.memo(WithdrawCalculateBlock);

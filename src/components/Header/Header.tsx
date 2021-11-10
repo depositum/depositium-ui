@@ -6,7 +6,14 @@ import React from "react";
 import ConnectWallet from "../ConnectWallet/ConnectWallet";
 
 const Header: React.FunctionComponent = () => (
-  <div className="Header">
+  <Box
+    style={{
+      alignItems: "center",
+      display: "flex",
+      height: 100,
+      justifyContent: "space-between",
+    }}
+  >
     <div
       style={{
         color: "#FFFFFF",
@@ -20,7 +27,7 @@ const Header: React.FunctionComponent = () => (
       Depositium
     </div>
     <Box>{walletAPI.isSignedIn() ? <ProfileItem /> : <ConnectWallet />}</Box>
-  </div>
+  </Box>
 );
 
 export default React.memo(Header);

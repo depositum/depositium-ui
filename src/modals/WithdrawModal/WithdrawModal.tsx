@@ -3,29 +3,31 @@ import { Button, IconButton, styled } from "@mui/material";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import CloseIcon from "../../icons/CloseIcon";
-import DepositCalculateBlock from "./DepositCalculateBlock";
+import WithdrawCalculateBlock from "./WithdrawCalculateBlock";
+import { store } from "../../store";
 
-const depositSchema = Yup.object().shape({
-  amount: Yup.number()
-    .typeError("Invalid amount!")
-    .min(10, "Min amount is 10!")
-    .max(100, "Max amount is 100!"),
-});
+const withdrawSchema = (balance: number) =>
+  Yup.object().shape({
+    amount: Yup.number()
+      .typeError("Invalid amount!")
+      .min(0.1, "Min amount is 0.1!")
+      .max(balance, `Max amount is ${balance.toFixed(2)}!`),
+  });
 
 interface Props {
   onClose: () => void;
-  onDeposit: (amount: string) => void;
+  onWithdraw: (amount: string) => void;
 }
 
-const DepositModal: React.FunctionComponent<Props> = ({
+const WithdrawModal: React.FunctionComponent<Props> = ({
   onClose,
-  onDeposit,
+  onWithdraw,
 }) => {
   const onSubmit = useCallback(
     ({ amount }) => {
-      onDeposit(amount);
+      onWithdraw(amount);
     },
-    [onDeposit],
+    [onWithdraw],
   );
 
   return (
@@ -34,7 +36,7 @@ const DepositModal: React.FunctionComponent<Props> = ({
         initialValues={{
           amount: "",
         }}
-        validationSchema={depositSchema}
+        validationSchema={withdrawSchema(store.getState().balance.balance)}
         onSubmit={onSubmit}
       >
         {({ errors, touched, values, handleChange, handleSubmit }) => (
@@ -72,7 +74,7 @@ const DepositModal: React.FunctionComponent<Props> = ({
                   lineHeight: "26px",
                 }}
               >
-                Deposit NEAR
+                Withdraw NEAR
               </div>
               <IconButton onClick={onClose} aria-label="delete" size="small">
                 <CloseIcon />
@@ -87,7 +89,7 @@ const DepositModal: React.FunctionComponent<Props> = ({
             />
             <Form>
               <div style={{ paddingLeft: 39, paddingRight: 39 }}>
-                <DepositCalculateBlock
+                <WithdrawCalculateBlock
                   amount={values.amount}
                   onAmountChange={handleChange("amount")}
                   errorMessage={errors.amount}
@@ -100,14 +102,14 @@ const DepositModal: React.FunctionComponent<Props> = ({
                   marginTop: 14,
                 }}
               >
-                <DepositButton
+                <WithdrawButton
                   disabled={
                     errors.amount !== undefined && values.amount.length === 0
                   }
                   onClick={() => handleSubmit()}
                 >
-                  Deposit
-                </DepositButton>
+                  Withdraw
+                </WithdrawButton>
               </div>
             </Form>
           </div>
@@ -117,7 +119,7 @@ const DepositModal: React.FunctionComponent<Props> = ({
   );
 };
 
-const DepositButton = styled(Button)({
+const WithdrawButton = styled(Button)({
   backgroundColor: "#0097A7",
   borderRadius: 20,
   color: "#FFFFFF",
@@ -132,4 +134,4 @@ const DepositButton = styled(Button)({
   width: 110,
 });
 
-export default React.memo(DepositModal);
+export default React.memo(WithdrawModal);

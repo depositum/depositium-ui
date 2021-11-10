@@ -20,17 +20,16 @@ const StrategiesList: React.FunctionComponent = () => {
 
   return (
     <>
-      <div
-        style={{
+      <Box
+        sx={{
           display: "flex",
           justifyContent: "flex-end",
-          marginBottom: 23,
         }}
       >
         <StatusInfo color="#00D254" label="In progress" />
-        <StatusInfo color="#00ADD2" label="Active" />
+        <StatusInfo color="#00ADD2" label="Open" />
         <StatusInfo color="#F0B622" label="Coming soon" />
-      </div>
+      </Box>
       {farms.length > 0 ? (
         <Box
           sx={{
@@ -38,7 +37,6 @@ const StrategiesList: React.FunctionComponent = () => {
             flexWrap: "wrap",
             justifyContent: "center",
             mb: 2.5,
-            mx: 2.5,
           }}
         >
           {[...farms, ...stakes].map((item, index) => (
@@ -59,6 +57,7 @@ const StrategiesList: React.FunctionComponent = () => {
             display: "flex",
             height: "100%",
             justifyContent: "center",
+            minWidth: 960,
           }}
         >
           <CircularProgress color="success" />
@@ -77,11 +76,11 @@ const StatusInfo: React.FunctionComponent<StatusInfoProps> = ({
   color,
   label,
 }) => (
-  <div
-    style={{
+  <Box
+    sx={{
       alignItems: "center",
       display: "flex",
-      margin: "20px 18px 0px 18px",
+      ml: 4,
     }}
   >
     <div
@@ -103,9 +102,9 @@ const StatusInfo: React.FunctionComponent<StatusInfoProps> = ({
         opacity: 0.4,
       }}
     >
-      {` - ${label}`}
+      {` — ${label}`}
     </div>
-  </div>
+  </Box>
 );
 
 export default React.memo(StrategiesList);

@@ -31,6 +31,41 @@ export const nearAPIMainnet = new Near({
   ...configMainnet,
 });
 
+export const withdraw = async amount => {
+  const transactions = [];
+  const amountYocto = utils.format.parseNearAmount(amount);
+  transactions.push({
+    functionCalls: [
+      {
+        amount: ONE_YOCTO_NEAR,
+        args: {
+          coin: config.wrapNearContractId,
+          amount: amountYocto,
+        },
+        gas: "300000000000000",
+        methodName: "withdrawal",
+      },
+    ],
+    receiverId: config.depositiumContractId,
+  });
+
+  transactions.push({
+    functionCalls: [
+      {
+        amount: ONE_YOCTO_NEAR,
+        args: {
+            amount: amountYocto,
+        },
+        gas: "30000000000000",
+        methodName: "near_withdraw",
+      },
+    ],
+    receiverId: config.wrapNearContractId,
+  });
+
+  return executeMultipleTransactions(transactions);
+};
+
 export const wrapNear = async amount => {
   const transactions = [];
 
@@ -72,6 +107,65 @@ export const wrapNear = async amount => {
   return executeMultipleTransactions(transactions);
 };
 
+export const stopStrategy = async strategyId => {
+  console.log("stopStrategy", strategyId);
+
+  const transactions = [];
+
+  const accoundId = wallet.getAccountId();
+  const accoundPrefix = accoundId.split(".")[0];
+  const subAccId = `${accoundPrefix}.${config.depositiumContractId}`;
+  
+  transactions.push({
+    functionCalls: [
+      {
+        amount: ONE_YOCTO_NEAR,
+        args: {},
+        gas: "300000000000000",
+        methodName: "stop_farming",
+      },
+    ],
+    receiverId: subAccId,
+  });
+
+  transactions.push({
+    functionCalls: [
+      {
+        amount: ONE_YOCTO_NEAR,
+        args: {},
+        gas: "300000000000000",
+        methodName: "withdraw_reward",
+      },
+    ],
+    receiverId: subAccId,
+  });
+
+  transactions.push({
+    functionCalls: [
+      {
+        amount: ONE_YOCTO_NEAR,
+        args: {},
+        gas: "300000000000000",
+        methodName: "redeem",
+      },
+    ],
+    receiverId: subAccId,
+  });
+
+  transactions.push({
+    functionCalls: [
+      {
+        amount: ONE_YOCTO_NEAR,
+        args: {},
+        gas: "300000000000000",
+        methodName: "delete",
+      },
+    ],
+    receiverId: subAccId,
+  });
+
+  return executeMultipleTransactions(transactions);
+};
 export const startStrategy = async amount => {
   const transactions = [];
 

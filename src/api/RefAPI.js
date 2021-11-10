@@ -5,6 +5,8 @@ import {
   getRewardsByAccountId,
   getSeeds,
   getStakedListByAccountId,
+  getUnclaimedReward,
+  getStrategyInitialDeposit,
 } from "../contract/RefContractView";
 import walletAPI from "./WalletAPI";
 import config from "../config";
@@ -85,17 +87,54 @@ export const fetchFarmList = async () => {
 
   let farmsInfo = [];
   for (const farm of filteredFarms) {
-    farmsInfo.push(
-      await getFarmInfo(
-        farm,
-        poolList[farm.farm_id],
-        stakedList[farm.seed_id],
-        tokenPriceList,
-        rewardList[farm.reward_token],
-        seeds[farm.seed_id],
-        getLPTokenId(farm.farm_id),
-      ),
+    const farmInfo = await getFarmInfo(
+      farm,
+      poolList[farm.farm_id],
+      stakedList[farm.seed_id],
+      tokenPriceList,
+      rewardList[farm.reward_token],
+      seeds[farm.seed_id],
+      getLPTokenId(farm.farm_id),
     );
+
+    const rawUnclaimedReward = walletAPI.isSignedIn()
+      ? await getUnclaimedReward({
+          accountId: subAccId,
+          farmId: farm.farm_id,
+        })
+      : "0";
+
+    const strategyInitialDeposit = walletAPI.isSignedIn()
+      ? await getStrategyInitialDeposit({
+          accountId: subAccId,
+        })
+      : "0";
+
+    const unclaimedReward =
+      rawUnclaimedReward !== "0"
+        ? new BigNumber(rawUnclaimedReward)
+            .dividedBy(new BigNumber(10).pow(18))
+            .dividedBy(tokenPriceList['wrap_near-aromankov.testnet'])
+            .toFixed(2)
+        : "0";
+
+    let strategyInProgress = false;
+    try {
+      strategyInProgress = walletAPI.isSignedIn()
+        ? !new BigNumber(strategyInitialDeposit).isZero()
+        : false;
+    } catch (e) {
+      console.log(e);
+    }
+
+    farmsInfo.push({
+      ...farmInfo,
+      strategyInProgress,
+      strategyInitialDeposit: new BigNumber(strategyInitialDeposit || "0")
+        .dividedBy(new BigNumber(10).pow(24))
+        .toFixed(2),
+      unclaimedReward,
+    });
   }
   return farmsInfo;
 };

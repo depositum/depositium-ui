@@ -1,18 +1,21 @@
 import React, { useCallback, useState } from "react";
 import CalculatorIcon from "../../icons/CalculatorIcon";
-import { Button, Modal, styled } from "@mui/material";
+import { Box, Button, Modal, styled } from "@mui/material";
 import CalculatorModal from "../../modals/CalculatorModal/CalculatorModal";
 import { IFarm } from "../../hooks/useFarmsList";
 import { IStake } from "../../hooks/useStakesList";
+import { LocalAtm } from "@mui/icons-material";
 
 interface Props {
   strategy: IFarm | IStake;
   onStartStrategy: (amount: string, strategyId: string) => void;
+  onStopStrategy: (strategyId: string) => void;
 }
 
 const StrategyTitle: React.FunctionComponent<Props> = ({
   strategy,
   onStartStrategy,
+  onStopStrategy,
 }) => {
   // Calculator control
   const [calculatorVisible, setCalculatorVisible] = useState(false);
@@ -24,6 +27,10 @@ const StrategyTitle: React.FunctionComponent<Props> = ({
   const onCloseCalculator = useCallback(() => {
     setCalculatorVisible(false);
   }, []);
+
+  const onFinish = useCallback(() => {
+    onStopStrategy(String(strategy.id));
+  }, [onStopStrategy, strategy.id]);
 
   return (
     <>
@@ -46,13 +53,23 @@ const StrategyTitle: React.FunctionComponent<Props> = ({
         >
           {strategy.provider}
         </div>
-        <CalculateButton
-          onClick={onOpenCalculator}
-          variant="text"
-          startIcon={<CalculatorIcon />}
-        >
-          Calculate
-        </CalculateButton>
+        <Box>
+          <CalculateButton
+            onClick={onOpenCalculator}
+            variant="text"
+            startIcon={<CalculatorIcon />}
+          >
+            Estimate
+          </CalculateButton>
+          {strategy.status == "in-progress" && (
+            <FinishButton
+              startIcon={<LocalAtm sx={{ height: "18px", width: "18px" }} />}
+              onClick={onFinish}
+            >
+              Finish
+            </FinishButton>
+          )}
+        </Box>
       </div>
       <div
         style={{
@@ -83,6 +100,18 @@ const CalculateButton = styled(Button)({
   fontStyle: "normal",
   fontWeight: "bold",
   lineHeight: "26px",
+  marginRight: "8px",
+  padding: "6px",
+  textTransform: "none",
+});
+
+const FinishButton = styled(Button)({
+  color: "black",
+  fontSize: "12px",
+  fontStyle: "normal",
+  fontWeight: "bold",
+  lineHeight: "26px",
+  marginLeft: "4px",
   marginRight: "8px",
   padding: "6px",
   textTransform: "none",

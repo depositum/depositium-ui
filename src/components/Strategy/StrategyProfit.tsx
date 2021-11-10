@@ -1,9 +1,12 @@
-import React, { useMemo } from "react";
-import { store } from "../../store";
+import React, { ReactChild, useMemo } from "react";
+import { ArrowCircleDown, MonetizationOn } from "@mui/icons-material";
+import { Box, Tooltip } from "@mui/material";
+import useNearBalance from "../../hooks/useNearBalance";
+import BigNumber from "bignumber.js";
 
 interface Props {
-  depositAmount: number;
-  profitAmount: number;
+  depositAmount: string;
+  profitAmount: string;
 }
 
 const StrategyProfit: React.FunctionComponent<Props> = ({
@@ -18,50 +21,62 @@ const StrategyProfit: React.FunctionComponent<Props> = ({
         opacity: 0.1,
       }}
     />
-    <InfoBlock label="Deposit" amount={depositAmount} />
-    <InfoBlock label="Profit" amount={profitAmount} />
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        ml: "14px",
+        mr: "20px",
+        mt: "12px",
+      }}
+    >
+      <Tooltip disableFocusListener title="Deposited" placement="bottom">
+        <div>
+          <InfoBlock
+            icon={<ArrowCircleDown fontSize="large" />}
+            amount={depositAmount}
+          />
+        </div>
+      </Tooltip>
+
+      <Tooltip title="Profit" placement="bottom">
+        <div>
+          <InfoBlock
+            icon={<MonetizationOn fontSize="large" />}
+            amount={profitAmount}
+          />
+        </div>
+      </Tooltip>
+    </Box>
   </>
 );
 
 interface InfoBlockProps {
-  label: string;
-  amount: number;
+  icon: ReactChild;
+  amount: string;
 }
 
 const InfoBlock: React.FunctionComponent<InfoBlockProps> = ({
-  label,
+  icon,
   amount,
 }) => {
+  const { balance } = useNearBalance();
+
   const amountFiat = useMemo(() => {
-    if (Number(amount)) {
-      return (Number(amount) * store.getState().balance.rate).toFixed(2);
+    if (new BigNumber(amount).gt(0)) {
+      return new BigNumber(amount).multipliedBy(balance).toFixed(2);
     }
-    return 0;
-  }, [amount]);
+    return "0";
+  }, [amount, balance]);
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         alignItems: "center",
         display: "flex",
-        justifyContent: "space-between",
-        marginLeft: 14,
-        marginRight: 20,
-        marginTop: 12,
       }}
     >
-      <div
-        style={{
-          color: "#2D2D2D",
-          fontSize: 20,
-          fontStyle: "normal",
-          fontWeight: "bold",
-          lineHeight: "20px",
-          opacity: 0.9,
-        }}
-      >
-        {`${label}:`}
-      </div>
+      <Box sx={{ alignItems: "center", mr: 2 }}>{icon}</Box>
       <div style={{ flexDirection: "column" }}>
         <div
           style={{
@@ -69,11 +84,11 @@ const InfoBlock: React.FunctionComponent<InfoBlockProps> = ({
             fontStyle: "normal",
             fontWeight: "bold",
             lineHeight: "20px",
-            textAlign: "end",
+            textAlign: "start",
             textTransform: "uppercase",
           }}
         >
-          {`${amount.toFixed(2)} NEAR`}
+          {`${amount} NEAR`}
         </div>
         <div
           style={{
@@ -82,13 +97,13 @@ const InfoBlock: React.FunctionComponent<InfoBlockProps> = ({
             fontWeight: 500,
             lineHeight: "26px",
             opacity: 0.5,
-            textAlign: "end",
+            textAlign: "start",
           }}
         >
           {`$${amountFiat} USD`}
         </div>
       </div>
-    </div>
+    </Box>
   );
 };
 

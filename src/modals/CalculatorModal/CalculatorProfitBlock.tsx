@@ -6,6 +6,7 @@ interface Props {
   days: number;
   apr: number;
   amount: string | number;
+  amountErrorMessage: string | undefined;
   onDaysChange: (value: string) => void;
 }
 
@@ -13,6 +14,7 @@ const CalculatorProfitBlock: React.FunctionComponent<Props> = ({
   days,
   apr,
   amount,
+  amountErrorMessage,
   onDaysChange,
 }) => {
   const onChange = useCallback(
@@ -25,14 +27,14 @@ const CalculatorProfitBlock: React.FunctionComponent<Props> = ({
   );
 
   const profit = useMemo(() => {
-    if (Number(amount)) {
+    if (amountErrorMessage === undefined && Number(amount)) {
       return (
         ((Number(amount) * apr * days) / 365 / 100) *
         store.getState().balance.rate
       ).toFixed(2);
     }
     return 0;
-  }, [amount, apr, days]);
+  }, [amount, amountErrorMessage, apr, days]);
 
   return (
     <div>
