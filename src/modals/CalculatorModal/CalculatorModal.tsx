@@ -15,8 +15,8 @@ import { store } from "../../store";
 const calculateSchema = Yup.object().shape({
   amount: Yup.number()
     .typeError("Invalid amount!")
-    .min(0.01, "Min amount 0.01 NEAR")
-    .max(10, "Max amount 10 NEAR"),
+    .min(1, "Min amount 1 NEAR")
+    .max(10000, "Max amount 10000 NEAR"),
   days: Yup.number().min(1, "Too Short!").max(90, "Too Long!"),
 });
 
