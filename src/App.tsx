@@ -7,6 +7,8 @@ import Header from "./components/Header/Header";
 import Balance from "./components/Balance/Balance";
 import StrategiesList from "./features/strategies/StrategiesList";
 import walletAPI from "./api/WalletAPI";
+import { Provider } from "react-redux";
+import { store } from "./data/store/store";
 
 const theme = createTheme({
   palette: {
@@ -27,44 +29,46 @@ const theme = createTheme({
 
 const App = (): JSX.Element => (
   <ThemeProvider theme={theme}>
-    <div className="App">
-      <CssBaseline />
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateAreas: `"header header"
-          "page page"`,
-          gridTemplateRows: "1fr 6fr",
-          height: "100%",
-          justifyContent: "center",
-          overflow: "hidden",
-          pb: 10,
-          px: 5,
-          width: "100%",
-        }}
-      >
-        <Box sx={{ gridArea: "header", maxWidth: 1380 }}>
-          <Header />
-        </Box>
+    <Provider store={store}>
+      <div className="App">
+        <CssBaseline />
         <Box
           sx={{
-            borderRadius: "10px",
-            display: "flex",
-            gridArea: "page",
+            display: "grid",
+            gridTemplateAreas: `"header header"
+          "page page"`,
+            gridTemplateRows: "1fr 6fr",
             height: "100%",
             justifyContent: "center",
             overflow: "hidden",
+            pb: 10,
+            px: 5,
             width: "100%",
           }}
         >
-          {walletAPI.isSignedIn() ? (
-            <AuthorizedContent />
-          ) : (
-            <NotAuthorizedContent />
-          )}
+          <Box sx={{ gridArea: "header", maxWidth: 1380 }}>
+            <Header />
+          </Box>
+          <Box
+            sx={{
+              borderRadius: "10px",
+              display: "flex",
+              gridArea: "page",
+              height: "100%",
+              justifyContent: "center",
+              overflow: "hidden",
+              width: "100%",
+            }}
+          >
+            {walletAPI.isSignedIn() ? (
+              <AuthorizedContent />
+            ) : (
+              <NotAuthorizedContent />
+            )}
+          </Box>
         </Box>
-      </Box>
-    </div>
+      </div>
+    </Provider>
   </ThemeProvider>
 );
 
@@ -118,6 +122,7 @@ const NotAuthorizedContent: React.FunctionComponent = () => (
       overflowY: "auto",
       px: 5,
       py: 4,
+      width: 960,
     }}
   >
     <StrategiesList />
